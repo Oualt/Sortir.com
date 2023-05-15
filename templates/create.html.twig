@@ -1,0 +1,19 @@
+{% extends 'maine.html.twig' %}
+
+{% block title %}{{ parent() }} | Créer une sortie{% endblock %}
+
+{% block body %}
+
+
+            {{ form_start(sortieForm) }}
+            {{ form_widget(sortieForm) }}
+<container>
+            <button>Enregistrer</button>
+            <button>Publier la sortie</button>
+            <button>Annuler</button>
+</container>
+            {{ form_end(sortieForm) }}
+
+
+
+{% endblock %}

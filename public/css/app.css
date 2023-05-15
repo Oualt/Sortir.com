@@ -1,0 +1,106 @@
+/* Styles généraux */
+
+body {
+    margin: 0;
+    font-family: Manrope, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+a {
+   color: white;
+    text-decoration: none;
+}
+
+/* Gestion du Logo */
+
+header a img {
+    height: 50px; /* Hauteur de l'image */
+    width: 50px; /* Largeur de l'image */
+    margin-right: 10px; /* Marge à droite de l'image pour séparation avec le texte */
+}
+
+/* En-tête */
+
+header {
+    background-color: cornflowerblue;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+}
+
+h1 {
+    color: white;
+    margin: 0;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+}
+
+nav li {
+    margin-left: 20px;
+}
+
+nav a {
+    display: block;
+    padding: 10px;
+}
+
+nav a:hover {
+    background-color: #005fa3;
+}
+
+/* Pied de page */
+
+footer {
+    background-color: #333333;
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    text-align: center;
+    color: #AAAAAA;
+}
+
+/* Médias queries */
+
+@media (max-width: 768px) {
+    header {
+        flex-wrap: wrap;
+    }
+
+    h1 {
+        margin-bottom: 10px;
+    }
+
+    nav {
+        order: 3;
+        width: 100%;
+    }
+
+    nav ul {
+        display: block;
+        text-align: center;
+    }
+
+    nav li {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    nav a {
+        display: inline-block;
+        padding: 5px;
+    }
+}

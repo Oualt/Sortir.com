@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
-class MainController
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class MainController extends AbstractController
 {
 
 }

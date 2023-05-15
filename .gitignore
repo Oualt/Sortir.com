@@ -19,7 +19,6 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
-composer.json
 composer.lock
 symfony.lock
 public/.htaccess

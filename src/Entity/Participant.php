@@ -37,6 +37,12 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     #[ORM\Column]
     private ?bool $actif = null;
 
+    #[ORM\Column(length: 30)]
+    private ?string $pseudo = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -163,5 +169,29 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     public function getUsername(): ?string
     {
         return $this->mail;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
     }
 }

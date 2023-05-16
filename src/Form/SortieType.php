@@ -42,6 +42,7 @@ class SortieType extends AbstractType
             ->add('infosSortie', TextareaType::class, [
                 'label'=> 'Description et infos',
             ])
+
         ;
     }
 

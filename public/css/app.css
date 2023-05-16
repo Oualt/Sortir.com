@@ -127,12 +127,12 @@ textarea
 
 /* Style pour les cases de texte */
 input[type="text"],
-textarea,
-select
+textarea
+
 {
     border: 1px solid #ced4da;
     margin-bottom: 1rem;
-    box-sizing: border-box;
+
     max-width: 40%;
     width: 300px;
 
@@ -141,8 +141,7 @@ select
 /* Style pour les cases de sélection */
 select {
     appearance: none;
-    background-color: white;
-    background-repeat: no-repeat;
+
     background-position: right 0.75rem center;
     background-size: 8px 10px;
     border: 1px solid #ced4da;
@@ -154,7 +153,9 @@ select {
 
 /* Style pour les étiquettes */
 label {
-    display: block;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
     font-weight: bold;
     margin-bottom: 0.5rem;
 }

@@ -7,14 +7,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-    #[Route("/", name:"main_login")]
+    #[Route("/", name: "main_login")]
     public function login()
     {
-        return $this->render('login.html.twig');
+        return $this->render('security/login.html.twig');
     }
-    #[Route("/accueil", name:"main_accueil")]
+    #[Route("/accueil", name: "main_accueil")]
     public function accueil()
     {
-        return$this->render('accueil.html.twig');
+        return $this->render('accueil.html.twig');
     }
 }

@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
-class Participant
+class Participant implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -121,5 +124,44 @@ class Participant
         $this->actif = $actif;
 
         return $this;
+    }
+
+    // implementation de getRoles() de l'interface UserInterface
+    public function getRoles(): array
+    {
+        $roles = ['ROLE_USER'];
+        if ($this->isAdministrateur()) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+        return $roles;
+    }
+
+    // implementation de getPassword() de l'interface UserInterface
+    public function getPassword(): ?string
+    {
+        return $this->motDePasse;
+    }
+
+    // implementation de getUserIdentifier() de l'interface UserInterface
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->mail;
+    }
+
+    // implementation de eraseCredentials() de l'interface UserInterface
+    public function eraseCredentials(): void
+    {
+    }
+
+    // implementation de getSalt() de l'interface UserInterface
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    // implementation de getUsername() de l'interface UserInterface
+    public function getUsername(): ?string
+    {
+        return $this->mail;
     }
 }

@@ -10,7 +10,7 @@
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {{ form_row(registrationForm.agreeTerms, {label: "J'accepte de céder tous mes biens matériels à l'ENI. "}) }}
 
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}

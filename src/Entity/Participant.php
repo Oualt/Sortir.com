@@ -26,7 +26,7 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     private ?string $telephone = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $mail = null;
+    private ?string $Email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $motDePasse = null;
@@ -84,14 +84,14 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
         return $this;
     }
 
-    public function getMail(): ?string
+    public function getEmail(): ?string
     {
-        return $this->mail;
+        return $this->Email;
     }
 
-    public function setMail(string $mail): self
+    public function setEmail(string $email): self
     {
-        $this->mail = $mail;
+        $this->Email = $email;
 
         return $this;
     }
@@ -151,7 +151,7 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     // implementation de getUserIdentifier() de l'interface UserInterface
     public function getUserIdentifier(): string
     {
-        return (string) $this->mail;
+        return (string) $this->email;
     }
 
     // implementation de eraseCredentials() de l'interface UserInterface
@@ -168,7 +168,7 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     // implementation de getUsername() de l'interface UserInterface
     public function getUsername(): ?string
     {
-        return $this->mail;
+        return $this->email;
     }
 
     public function getPseudo(): ?string

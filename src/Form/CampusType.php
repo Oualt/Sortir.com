@@ -15,8 +15,9 @@ class CampusType extends AbstractType
     {
         $builder
             ->add('nom', EntityType::class, [
+                'label'=> 'Campus',
                 'class' => Campus::class,
-                'choice_label' => 'name',
+                'choice_label' => 'nom',
 
                 'multiple' => false
             ])

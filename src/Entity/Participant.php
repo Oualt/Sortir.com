@@ -43,6 +43,11 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    //ajoute role
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,11 +140,18 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     // implementation de getRoles() de l'interface UserInterface
     public function getRoles(): array
     {
-        $roles = ['ROLE_USER'];
-        if ($this->isAdministrateur()) {
-            $roles[] = 'ROLE_ADMIN';
-        }
-        return $roles;
+        // $roles = ['ROLE_USER'];
+        // if ($this->isAdministrateur()) {
+        //     $roles[] = 'ROLE_ADMIN';
+        // }
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     // implementation de getPassword() de l'interface UserInterface

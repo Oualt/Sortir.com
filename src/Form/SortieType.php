@@ -24,37 +24,41 @@ class SortieType extends AbstractType
                 'label' => 'Nom de la sortie'
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
-                'label' => 'Date et heure de la sortie',
-                'date_widget' => 'single_text'
+                'label'=> 'Date et heure de la sortie',
+              'date_widget' => 'single_text'
             ])
             ->add('dateLimiteInscription', DateType::class, [
-                'label' => 'Date limite d inscription',
-                'html5' => true,
+                'label'=>'Date limite d inscription',
+                'html5'=>true,
                 'widget' => 'single_text',
             ])
-            // ajout de la durée en minutes de 10 à 180, qui est un intervalle de temps en DateIntervalType
-            ->add('duree', DateIntervalType::class, [
-                'label' => 'Durée',
-                'with_years' => false,
-                'with_months' => false,
-                'with_days' => false,
-                'with_hours' => false,
-                'with_minutes' => true,
-                'with_seconds' => false,
-                'input' => 'dateinterval',
-                'widget' => 'choice',
-                'hours' => range(0, 5),
-                'minutes' => array_combine(range(10, 180), range(10, 180))
+            ->add('duree',  DateIntervalType::class, [
+                'label'=>'Durée',
+                'minutes' => range(0, 59),
+                'labels'=>[
+                    'invert' => null,
+                    'years' => null,
+                    'months' => null,
+                    'weeks' => null,
+                    'days' => null,
+                    'hours' => null,
+                    'minutes' => null,
+                    'seconds' => null,
+                ]
+               /* 'choices'=> array_combine(range(10,180), range(10, 180)),
+                'choice_label' => function($value){
+                return $value . ' minutes';
+                }*/
             ])
-
-
             ->add('nbInscriptionsMax', ChoiceType::class, [
-                'label' => 'Nombre de places',
-                'choices' => array_combine(range(1, 50), range(1, 50)),
+                'label'=> 'Nombre de places',
+                'choices'=> array_combine(range(1, 50), range(1, 50)),
             ])
             ->add('infosSortie', TextareaType::class, [
-                'label' => 'Description et infos',
-            ]);
+                'label'=> 'Description et infos',
+            ])
+
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

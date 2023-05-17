@@ -20,16 +20,22 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $user->setRoles(['ROLE_USER']);
+        $user->setAdministrateur(false);
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
+           // dd($user);
+            $plainPassword = $form->get('plainPassword')->getData();
+    if ($plainPassword !== null) {
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
+    
             );
 
             $entityManager->persist($user);
@@ -42,6 +48,7 @@ class RegistrationController extends AbstractController
                 $request
             );
         }
+    }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),

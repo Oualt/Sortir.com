@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
-class Participant
+class Participant implements UserInterface, \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,7 +26,7 @@ class Participant
     private ?string $telephone = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $mail = null;
+    private ?string $Email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $motDePasse = null;
@@ -33,6 +36,12 @@ class Participant
 
     #[ORM\Column]
     private ?bool $actif = null;
+
+    #[ORM\Column(length: 30)]
+    private ?string $pseudo = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
 
     public function getId(): ?int
     {
@@ -75,14 +84,14 @@ class Participant
         return $this;
     }
 
-    public function getMail(): ?string
+    public function getEmail(): ?string
     {
-        return $this->mail;
+        return $this->Email;
     }
 
-    public function setMail(string $mail): self
+    public function setEmail(string $email): self
     {
-        $this->mail = $mail;
+        $this->Email = $email;
 
         return $this;
     }
@@ -119,6 +128,69 @@ class Participant
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    // implementation de getRoles() de l'interface UserInterface
+    public function getRoles(): array
+    {
+        $roles = ['ROLE_USER'];
+        if ($this->isAdministrateur()) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+        return $roles;
+    }
+
+    // implementation de getPassword() de l'interface UserInterface
+    public function getPassword(): ?string
+    {
+        return $this->motDePasse;
+    }
+
+    // implementation de getUserIdentifier() de l'interface UserInterface
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    // implementation de eraseCredentials() de l'interface UserInterface
+    public function eraseCredentials(): void
+    {
+    }
+
+    // implementation de getSalt() de l'interface UserInterface
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    // implementation de getUsername() de l'interface UserInterface
+    public function getUsername(): ?string
+    {
+        return $this->email;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

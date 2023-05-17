@@ -16,13 +16,13 @@
     <nav>
         <ul>
             {% if app.user %}
-                <li><a href="" title="accueil"></a>Accueil</li>
-                <li><a href="" title="monProfil"></a>Mon profil</li>
-                <li><a href="" title="seDeconnecter"></a>Se déconnecter (Hello! {{ app.user }})</li>
-                <li><a href="" title="villes"></a>Villes</li>
-                <li><a href="" title="campus"></a>Campus</li>
+                <li><a href="" title="accueil">Accueil</a></li>
+                <li><a href="" title="monProfil">Mon profil</a></li>
+                <li><a href="" title="seDeconnecter">Se déconnecter (Hello! {{ app.user }})</a></li>
+                <li><a href="" title="villes">Villes</a></li>
+                <li><a href="" title="campus">Campus</a></li>
             {% else %}
-                <li><a href="" title="creerUnProfil"></a>Créer un profil</li>
+                <li><a href="{{ path('app_register') }}" title="creerUnProfil">Créer un profil</a></li>
             {% endif %}
         </ul>
     </nav>

@@ -64,11 +64,11 @@ nav a:hover {
 
 footer {
     background-color: #333333;
-    position: fixed;
-    bottom: 10px;
+    position: relative;
+    bottom: 0px;
     left: 0;
     right: 0;
-    padding: 10px;
+    padding: 0px;
     text-align: center;
     color: #AAAAAA;
 }

@@ -34,12 +34,12 @@ class Sortie
     #[ORM\Column(type: Types::TEXT)]
     private ?string $infosSortie = null;
 
-    #[ORM\ManyToMany(targetEntity: Participant::class, mappedBy: 'estInscrit')]
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'estInscrit')]
     private Collection $sontInscrits;
 
     #[ORM\ManyToOne(inversedBy: 'organisateur')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Participant $organisateur = null;
+    private ?User $organisateur = null;
 
     #[ORM\ManyToOne(inversedBy: 'siteOrganisateur')]
     #[ORM\JoinColumn(nullable: false)]
@@ -136,14 +136,14 @@ class Sortie
     }
 
     /**
-     * @return Collection<int, Participant>
+     * @return Collection<int, User>
      */
     public function getSontInscrits(): Collection
     {
         return $this->sontInscrits;
     }
 
-    public function addSontInscrit(Participant $sontInscrit): self
+    public function addSontInscrit(User $sontInscrit): self
     {
         if (!$this->sontInscrits->contains($sontInscrit)) {
             $this->sontInscrits->add($sontInscrit);
@@ -153,7 +153,7 @@ class Sortie
         return $this;
     }
 
-    public function removeSontInscrit(Participant $sontInscrit): self
+    public function removeSontInscrit(User $sontInscrit): self
     {
         if ($this->sontInscrits->removeElement($sontInscrit)) {
             $sontInscrit->removeEstInscrit($this);
@@ -162,12 +162,12 @@ class Sortie
         return $this;
     }
 
-    public function getOrganisateur(): ?Participant
+    public function getOrganisateur(): ?User
     {
         return $this->organisateur;
     }
 
-    public function setOrganisateur(?Participant $organisateur): self
+    public function setOrganisateur(?User $organisateur): self
     {
         $this->organisateur = $organisateur;
 

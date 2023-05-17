@@ -18,16 +18,20 @@ class Campus
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
-    #[ORM\OneToMany(mappedBy: 'campus', targetEntity: Participant::class)]
-    private Collection $participants;
+    #[ORM\OneToMany(mappedBy: 'campus', targetEntity: User::class)]
+    private Collection $user;
 
     #[ORM\OneToMany(mappedBy: 'siteOrganisateur', targetEntity: Sortie::class)]
     private Collection $siteOrganisateur;
 
+    #[ORM\OneToMany(mappedBy: 'campus', targetEntity: User::class)]
+    private Collection $users;
+
     public function __construct()
     {
-        $this->participants = new ArrayCollection();
+        $this->user = new ArrayCollection();
         $this->siteOrganisateur = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,29 +52,29 @@ class Campus
     }
 
     /**
-     * @return Collection<int, Participant>
+     * @return Collection<int, User>
      */
-    public function getParticipants(): Collection
+    public function getUser(): Collection
     {
-        return $this->participants;
+        return $this->user;
     }
 
-    public function addParticipant(Participant $participant): self
+    public function addUser(User $user): self
     {
-        if (!$this->participants->contains($participant)) {
-            $this->participants->add($participant);
-            $participant->setCampus($this);
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+            $user->setCampus($this);
         }
 
         return $this;
     }
 
-    public function removeParticipant(Participant $participant): self
+    public function removeUser(User $user): self
     {
-        if ($this->participants->removeElement($participant)) {
+        if ($this->user->removeElement($user)) {
             // set the owning side to null (unless already changed)
-            if ($participant->getCampus() === $this) {
-                $participant->setCampus(null);
+            if ($user->getCampus() === $this) {
+                $user->setCampus(null);
             }
         }
 
@@ -105,5 +109,13 @@ class Campus
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
     }
 }

@@ -26,7 +26,7 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     private ?string $telephone = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Email = null;
+    private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $motDePasse = null;
@@ -86,12 +86,12 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
 
     public function getEmail(): ?string
     {
-        return $this->Email;
+        return $this->email;
     }
 
     public function setEmail(string $email): self
     {
-        $this->Email = $email;
+        $this->email = $email;
 
         return $this;
     }

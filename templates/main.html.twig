@@ -18,7 +18,7 @@
             {% if app.user %}
                 <li><a href="" title="accueil">Accueil</a></li>
                 <li><a href="" title="monProfil">Mon profil</a></li>
-                <li><a href="" title="seDeconnecter">Se déconnecter (Hello! {{ app.user }})</a></li>
+                <li><a href="" title="seDeconnecter">Se déconnecter (Hello! {{ app.user.nom }})</a></li>
                 <li><a href="" title="villes">Villes</a></li>
                 <li><a href="" title="campus">Campus</a></li>
             {% else %}
@@ -27,6 +27,16 @@
         </ul>
     </nav>
 </header>
+
+{# read and display all flash messages #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="flash flash-{{ label }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
 <main>
     {% block body %}{% endblock %}
 </main>

@@ -6,6 +6,7 @@ use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -31,9 +32,23 @@ class SortieType extends AbstractType
                 'html5'=>true,
                 'widget' => 'single_text',
             ])
-            ->add('duree',  ChoiceType::class, [
+            ->add('duree',  DateIntervalType::class, [
                 'label'=>'Durée',
-                'choices'=> array_combine(range(10,180), range(10, 180)),
+                'minutes' => range(0, 59),
+                'labels'=>[
+                    'invert' => null,
+                    'years' => null,
+                    'months' => null,
+                    'weeks' => null,
+                    'days' => null,
+                    'hours' => null,
+                    'minutes' => null,
+                    'seconds' => null,
+                ]
+               /* 'choices'=> array_combine(range(10,180), range(10, 180)),
+                'choice_label' => function($value){
+                return $value . ' minutes';
+                }*/
             ])
             ->add('nbInscriptionsMax', ChoiceType::class, [
                 'label'=> 'Nombre de places',

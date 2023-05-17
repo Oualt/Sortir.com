@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,30 @@ class Sortie
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $infosSortie = null;
+
+    #[ORM\ManyToMany(targetEntity: Participant::class, mappedBy: 'estInscrit')]
+    private Collection $sontInscrits;
+
+    #[ORM\ManyToOne(inversedBy: 'organisateur')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Participant $organisateur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'siteOrganisateur')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Campus $siteOrganisateur = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Etat $etat = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Lieu $lieu = null;
+
+    public function __construct()
+    {
+        $this->sontInscrits = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +131,81 @@ class Sortie
     public function setInfosSortie(string $infosSortie): self
     {
         $this->infosSortie = $infosSortie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participant>
+     */
+    public function getSontInscrits(): Collection
+    {
+        return $this->sontInscrits;
+    }
+
+    public function addSontInscrit(Participant $sontInscrit): self
+    {
+        if (!$this->sontInscrits->contains($sontInscrit)) {
+            $this->sontInscrits->add($sontInscrit);
+            $sontInscrit->addEstInscrit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSontInscrit(Participant $sontInscrit): self
+    {
+        if ($this->sontInscrits->removeElement($sontInscrit)) {
+            $sontInscrit->removeEstInscrit($this);
+        }
+
+        return $this;
+    }
+
+    public function getOrganisateur(): ?Participant
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?Participant $organisateur): self
+    {
+        $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+    public function getSiteOrganisateur(): ?Campus
+    {
+        return $this->siteOrganisateur;
+    }
+
+    public function setSiteOrganisateur(?Campus $siteOrganisateur): self
+    {
+        $this->siteOrganisateur = $siteOrganisateur;
+
+        return $this;
+    }
+
+    public function getEtat(): ?Etat
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?Etat $etat): self
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getLieu(): ?Lieu
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?Lieu $lieu): self
+    {
+        $this->lieu = $lieu;
 
         return $this;
     }

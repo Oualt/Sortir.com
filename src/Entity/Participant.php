@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -26,7 +28,7 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     private ?string $telephone = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Email = null;
+    private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $motDePasse = null;
@@ -42,6 +44,27 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
+
+    //ajoute role
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
+    #[ORM\ManyToOne(inversedBy: 'participants')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Campus $campus = null;
+
+    #[ORM\ManyToMany(targetEntity: Sortie::class, inversedBy: 'sontInscrits')]
+    private Collection $estInscrit;
+
+    #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Sortie::class)]
+    private Collection $organisateur;
+
+    public function __construct()
+    {
+        $this->estInscrit = new ArrayCollection();
+        $this->organisateur = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -86,12 +109,12 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
 
     public function getEmail(): ?string
     {
-        return $this->Email;
+        return $this->email;
     }
 
     public function setEmail(string $email): self
     {
-        $this->Email = $email;
+        $this->email = $email;
 
         return $this;
     }
@@ -135,11 +158,18 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     // implementation de getRoles() de l'interface UserInterface
     public function getRoles(): array
     {
-        $roles = ['ROLE_USER'];
-        if ($this->isAdministrateur()) {
-            $roles[] = 'ROLE_ADMIN';
-        }
-        return $roles;
+        // $roles = ['ROLE_USER'];
+        // if ($this->isAdministrateur()) {
+        //     $roles[] = 'ROLE_ADMIN';
+        // }
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     // implementation de getPassword() de l'interface UserInterface
@@ -191,6 +221,72 @@ class Participant implements UserInterface, \Symfony\Component\Security\Core\Use
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getEstInscrit(): Collection
+    {
+        return $this->estInscrit;
+    }
+
+    public function addEstInscrit(Sortie $estInscrit): self
+    {
+        if (!$this->estInscrit->contains($estInscrit)) {
+            $this->estInscrit->add($estInscrit);
+        }
+
+        return $this;
+    }
+
+    public function removeEstInscrit(Sortie $estInscrit): self
+    {
+        $this->estInscrit->removeElement($estInscrit);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getOrganisateur(): Collection
+    {
+        return $this->organisateur;
+    }
+
+    public function addOrganisateur(Sortie $organisateur): self
+    {
+        if (!$this->organisateur->contains($organisateur)) {
+            $this->organisateur->add($organisateur);
+            $organisateur->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganisateur(Sortie $organisateur): self
+    {
+        if ($this->organisateur->removeElement($organisateur)) {
+            // set the owning side to null (unless already changed)
+            if ($organisateur->getOrganisateur() === $this) {
+                $organisateur->setOrganisateur(null);
+            }
+        }
 
         return $this;
     }

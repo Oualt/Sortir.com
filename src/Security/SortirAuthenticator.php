@@ -24,6 +24,7 @@ class SortirAuthenticator extends AbstractLoginFormAuthenticator
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
+
     }
 
 
@@ -33,7 +34,7 @@ class SortirAuthenticator extends AbstractLoginFormAuthenticator
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
-        $passport = new Passport(
+        return new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->request->get('password', '')),
             [
@@ -42,11 +43,11 @@ class SortirAuthenticator extends AbstractLoginFormAuthenticator
         );
 
         // Gérer l'option "Se souvenir de moi".
-        if (true === $request->request->getBoolean('_remember_me')) {
-            $passport->addBadge(new RememberMeBadge());
-        }
+        //if (true === $request->request->getBoolean('_remember_me')) {
+          //  $passport->addBadge(new RememberMeBadge());
+        //}
 
-        return $passport;
+        //return $passport;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
@@ -56,8 +57,8 @@ class SortirAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        return new RedirectResponse($this->urlGenerator->generate('main_accueil'));
+
     }
 
     protected function getLoginUrl(Request $request): string

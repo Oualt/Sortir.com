@@ -34,12 +34,14 @@ header {
 }
 
 h1 {
-    color: white;
+
     margin: 0;
     font-size: 50px;
     font-weight: bold;
 }
-
+main{
+    color: #333333;
+}
 nav ul {
     margin: 0;
     padding: 0;

@@ -38,9 +38,9 @@ security:
     # - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/orga, roles: ROLE_ORGA }
     # - { path: ^/profile, roles: ROLE_USER }
-    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/sortie/create, roles: ROLE_USER }
-    - { path: ^/sortie/modify, roles: ROLE_ORGA }
+    # - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    # - { path: ^/sortie/create, roles: ROLE_USER }
+    # - { path: ^/sortie/modify, roles: ROLE_ORGA }
 
   role_hierarchy:
     ROLE_ADMIN: ROLE_ORGA

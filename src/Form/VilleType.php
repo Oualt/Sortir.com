@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Campus;
+use App\Entity\Lieu;
 use App\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -24,6 +24,7 @@ class VilleType extends AbstractType
                 'choice_label' => 'nom',
                 'multiple' => false
             ])
+
             /*->add('codePostal',EntityType::class, [
                 'label'=> 'Code Postal',
                 'class'=> Ville::class,

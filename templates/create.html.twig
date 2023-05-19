@@ -5,20 +5,18 @@
 {% block body %}
 
 <h2>Créer une sortie</h2>
-            {{ form_start(sortieForm) }}
-            {{ form_start(campusForm) }}
-            {{ form_start(villeForm) }}
-                {{ form_widget(sortieForm) }}
-                {{ form_widget(campusForm) }}
-                {{ form_widget(villeForm) }}
+{{ form_start(sortieForm) }}
+{{ form_label(sortieForm.campus) }}
+{{ form_start(villeForm) }}
+    {{ form_widget(sortieForm) }}
+    {{ form_widget(villeForm) }}
 
 <container>
-            <button>Enregistrer</button>
-            <button>Publier la sortie</button>
-            <button>Annuler</button>
+    <button>Enregistrer</button>
+    <button>Publier la sortie</button>
+    <button>Annuler</button>
 </container>
-            {{ form_end(sortieForm) }}
-            {{ form_end(campusForm) }}
-            {{ form_end(villeForm) }}
+{{ form_end(sortieForm) }}
+{{ form_end(villeForm) }}
 
 {% endblock %}

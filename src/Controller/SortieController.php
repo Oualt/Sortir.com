@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Entity\Etat;
 use App\Form\CampusType;
 use App\Form\SortieType;
 use App\Form\VilleType;
@@ -21,22 +22,35 @@ class SortieController extends AbstractController
 {
     //affichage du formulaire de création de sortie
 
-    #[Route("/sortie/create", name:"sortie_create")]
+    #[Route("/sortie/create", name: "sortie_create")]
     public function create(
         Request $request,
         EntityManagerInterface $entityManager
-        ): Response
-    {
+    ): Response {
         $campus = new Campus();
         $sortie = new Sortie();
         $ville = new Ville();
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
-        $campusForm = $this->createForm(CampusType::class, $campus);
         $villeForm = $this->createForm(VilleType::class, $ville);
 
         $sortieForm->handleRequest($request);
-        if ($sortieForm->isSubmitted()){
+        if ($sortieForm->isSubmitted()) {
+
+            $campus = $sortieForm->getData()->getCampus();
+            // dd($campus);
+            $sortie->setCampus($campus);
+            $sortie->setOrganisateur($this->getUser());
+
+            $etatRepository = $entityManager->getRepository(Etat::class);
+            $etatCree = $etatRepository->findOneBy(['libelle' => 'enCreation']);
+            // ajouter manuellement les états dans la base de données : enCreation, ouverte, cloturee, enCours, terminee, annulee
+            $sortie->setEtat($etatCree);
+
+            // $lieuRepository = $entityManager->getRepository(Lieu::class);
+            // $lieu = $lieuRepository->find($lieuId);
+            // $sortie->setLieu($lieu);
+
             $entityManager->persist($sortie);
             $entityManager->flush();
 
@@ -45,21 +59,20 @@ class SortieController extends AbstractController
         }
 
 
-     return $this->render('create.html.twig', [
-         'sortieForm' => $sortieForm->createView(),
-         'campusForm'=>$campusForm->createView(),
-         'villeForm'=>$villeForm->createView()
+        return $this->render('create.html.twig', [
+            'sortieForm' => $sortieForm->createView(),
 
-     ]);
+            'villeForm' => $villeForm->createView()
+
+        ]);
     }
     #[Route("/sortie/details/{id}", name: "sortie_details")]
     public function details(int $id, SortieRepository $sortieRepository): Response
     {
         $sortie = $sortieRepository->find($id);
 
-        return $this->render('sortie/details.html.twig',[
+        return $this->render('sortie/details.html.twig', [
             'sortie' => $sortie
         ]);
     }
-
 }

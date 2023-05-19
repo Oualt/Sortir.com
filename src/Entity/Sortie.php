@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Etat;
+use App\Entity\Lieu;
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
@@ -43,7 +45,19 @@ class Sortie
 
     #[ORM\ManyToOne(inversedBy: 'siteOrganisateur')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Campus $siteOrganisateur = null;
+    private ?Campus $campus = null;
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
+
+        return $this;
+    }
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -178,17 +192,7 @@ class Sortie
         return $this;
     }
 
-    public function getSiteOrganisateur(): ?Campus
-    {
-        return $this->siteOrganisateur;
-    }
 
-    public function setSiteOrganisateur(?Campus $siteOrganisateur): self
-    {
-        $this->siteOrganisateur = $siteOrganisateur;
-
-        return $this;
-    }
 
     public function getEtat(): ?Etat
     {
@@ -240,5 +244,4 @@ class Sortie
 
         return $this;
     }
-
 }

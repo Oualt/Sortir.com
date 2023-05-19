@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Sortie;
+use App\Entity\Campus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,12 +25,12 @@ class SortieType extends AbstractType
                 'label' => 'Nom de la sortie'
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
-                'label'=> 'Date et heure de la sortie',
-              'date_widget' => 'single_text'
+                'label' => 'Date et heure de la sortie',
+                'date_widget' => 'single_text'
             ])
             ->add('dateLimiteInscription', DateType::class, [
-                'label'=>'Date limite d inscription',
-                'html5'=>true,
+                'label' => 'Date limite d inscription',
+                'html5' => true,
                 'widget' => 'single_text',
             ])
             ->add('duree', DateIntervalType::class, [
@@ -45,19 +46,21 @@ class SortieType extends AbstractType
                 'hours' => range(0, 5),
                 'minutes' => array_combine(range(10, 180), range(10, 180))
             ])
-               /* 'choices'=> array_combine(range(10,180), range(10, 180)),
+            /* 'choices'=> array_combine(range(10,180), range(10, 180)),
                 'choice_label' => function($value){
                 return $value . ' minutes';
                 }*/
             ->add('nbInscriptionsMax', ChoiceType::class, [
-                'label'=> 'Nombre de places',
-                'choices'=> array_combine(range(1, 50), range(1, 50)),
+                'label' => 'Nombre de places',
+                'choices' => array_combine(range(1, 50), range(1, 50)),
             ])
             ->add('infosSortie', TextareaType::class, [
-                'label'=> 'Description et infos',
+                'label' => 'Description et infos',
             ])
-
-        ;
+            ->add('campus', EntityType::class, [
+                'class' => Campus::class,
+                'choice_label' => 'nom',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

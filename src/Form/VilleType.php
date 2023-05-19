@@ -33,7 +33,7 @@ class VilleType extends AbstractType
             ])*/
             ->add('codePostal', TextType::class, [
                 'label' => 'Code Postal',
-                'disabled' => true,
+
             ]);
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $form = $event->getForm();

@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Etat;
 use App\Entity\Lieu;
+use App\Entity\Ville;
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie

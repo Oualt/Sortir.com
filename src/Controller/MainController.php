@@ -37,11 +37,11 @@ class MainController extends AbstractController
     #[Route("/admin/villes", name: "app_villes")]
     public function villes()
     {
-        return$this->render('villes.html.twig');
+        return $this->render('villes.html.twig');
     }
     #[Route("/admin/campus", name: "app_campus")]
     public function campus()
     {
-        return$this->render('campus.html.twig');
+        return $this->render('campus.html.twig');
     }
 }

@@ -5,9 +5,9 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Entity\Sortie;
+use App\Entity\Lieu;
 use App\Entity\Ville;
 use App\Entity\Etat;
-use App\Form\CampusType;
 use App\Form\SortieType;
 use App\Form\VilleType;
 use App\Repository\SortieRepository;
@@ -29,10 +29,8 @@ class SortieController extends AbstractController
     ): Response {
         $campus = new Campus();
         $sortie = new Sortie();
-        $ville = new Ville();
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
-        $villeForm = $this->createForm(VilleType::class, $ville);
 
         $sortieForm->handleRequest($request);
         if ($sortieForm->isSubmitted()) {
@@ -41,15 +39,15 @@ class SortieController extends AbstractController
             // dd($campus);
             $sortie->setCampus($campus);
             $sortie->setOrganisateur($this->getUser());
+            $ville = $sortieForm->get('ville')->getData();
 
             $etatRepository = $entityManager->getRepository(Etat::class);
             $etatCree = $etatRepository->findOneBy(['libelle' => 'enCreation']);
             // ajouter manuellement les états dans la base de données : enCreation, ouverte, cloturee, enCours, terminee, annulee
             $sortie->setEtat($etatCree);
 
-            // $lieuRepository = $entityManager->getRepository(Lieu::class);
-            // $lieu = $lieuRepository->find($lieuId);
-            // $sortie->setLieu($lieu);
+            $lieu = $sortieForm->get('lieu')->getData();
+            $sortie->setLieu($lieu);
 
             $entityManager->persist($sortie);
             $entityManager->flush();
@@ -61,9 +59,6 @@ class SortieController extends AbstractController
 
         return $this->render('create.html.twig', [
             'sortieForm' => $sortieForm->createView(),
-
-            'villeForm' => $villeForm->createView()
-
         ]);
     }
     #[Route("/sortie/details/{id}", name: "sortie_details")]

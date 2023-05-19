@@ -17,4 +17,10 @@ class MainController extends AbstractController
     {
         return $this->render('accueil.html.twig');
     }
+
+    #[Route("/DetailsProfil", name: "app_profilDetails")]
+    public function detailsProfil()
+    {
+        return $this->render('detailsProfil.html.twig');
+    }
 }

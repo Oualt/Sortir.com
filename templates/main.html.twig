@@ -16,15 +16,20 @@
     <nav>
         <ul>
             {% if app.user %}
-                <li><a href="" title="accueil">Accueil</a></li>
-                <li><a href="" title="monProfil">Mon profil</a></li>
+                <li><a href="{{ path('main_accueil') }}" title="accueil">Accueil</a></li>
+                <li><a href="{{ path('app_profilDetails') }}" title="monProfil">Mon profil</a></li>
                 <li><a href="{{ path('app_logout') }}" title="seDeconnecter">Se déconnecter (Hello! {{ app.user.pseudo }})</a></li>
-                <li><a href="" title="villes">Villes</a></li>
-                <li><a href="" title="campus">Campus</a></li>
+
             {% else %}
                 <li><a href="{{ path('app_login') }}" title="campus">Se connecter</a></li>
                 <li><a href="{{ path('app_register') }}" title="creerUnProfil">Créer un profil</a></li>
             {% endif %}
+              {% if is_granted ("ROLE_ADMIN") %}
+            <li><a href="" title="villes">Villes</a></li>
+            <li><a href="" title="campus">Campus</a></li>
+            {% endif %}
+
+
         </ul>
     </nav>
 </header>
@@ -42,7 +47,7 @@
     {% block body %}{% endblock %}
 </main>
 <footer>
-    <p>&copy; {{ "now"|date("Y") }} Sortir.com | 404</p>
+    <p>&copy {{ "now"|date("Y") }} Sortir.com | 404</p>
 </footer>
 </body>
 </html>

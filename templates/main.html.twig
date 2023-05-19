@@ -18,10 +18,11 @@
             {% if app.user %}
                 <li><a href="" title="accueil">Accueil</a></li>
                 <li><a href="" title="monProfil">Mon profil</a></li>
-                <li><a href="" title="seDeconnecter">Se déconnecter (Hello! {{ app.user.nom }})</a></li>
+                <li><a href="{{ path('app_logout') }}" title="seDeconnecter">Se déconnecter (Hello! {{ app.user.pseudo }})</a></li>
                 <li><a href="" title="villes">Villes</a></li>
                 <li><a href="" title="campus">Campus</a></li>
             {% else %}
+                <li><a href="{{ path('app_login') }}" title="campus">Se connecter</a></li>
                 <li><a href="{{ path('app_register') }}" title="creerUnProfil">Créer un profil</a></li>
             {% endif %}
         </ul>

@@ -31,24 +31,26 @@ class RegistrationController extends AbstractController
            // dd($user);
             $plainPassword = $form->get('plainPassword')->getData();
     if ($plainPassword !== null) {
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-    
-            );
+        $user->setPassword(
+            $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('plainPassword')->getData()
+            )
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
+        );
 
+        $entityManager->persist($user);
+        $entityManager->flush();
+        // do anything else you need here, like send an email
+        $this->addFlash('success', 'Profil créé avec succes !');
+        return $this->redirectToRoute('main_accueil', ['id' => $user->getId()]);
+    }
             return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
                 $request
             );
-        }
+
     }
 
         return $this->render('registration/register.html.twig', [

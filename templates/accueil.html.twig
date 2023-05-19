@@ -3,7 +3,35 @@
 {% block title %}{{ parent() }} | Accueil{% endblock %}
 
 {% block body %}
-<h1>Accueil</h1>
+    <h1>Accueuil</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Date de la sortie</th>
+            <th>Clôture</th>
+            <th>inscrits/places</th>
+            <th>État</th>
+            <th>Inscrit</th>
+            <th>Organisateur</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sortie in sorties %}
+            <tr>
+                <td>{{ sortie.nom }}</td>
+                <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
+                <td>{{ sortie.dateLimiteInscription }}</td>
+                <td>{{ sortie.nbInscriptionsMax }}</td>
+                <td>{{ sortie.etat.libelle }}</td>
+                <td>{{ sortie.user.actif }}</td>
+                <td>{{ sortie.user.nom }}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     <button>
         <a href="{{ path('sortie_create') }}">Créer une sortie</a>
     </button>

@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Sortie;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @method getDoctrine()
+ */
 class MainController extends AbstractController
 {
     #[Route("/", name: "main_login")]
@@ -12,10 +17,16 @@ class MainController extends AbstractController
     {
         return $this->redirectToRoute('app_login');
     }
+
     #[Route("/accueil", name: "main_accueil")]
-    public function accueil()
+    public function accueil(ManagerRegistry $doctrine)
     {
-        return $this->render('accueil.html.twig');
+        $sorties = $doctrine->getRepository(Sortie::class)->createQueryBuilder('s')
+            ->leftJoin('s.etat', 'e') // Jointure avec l'entité Etat
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('accueil.html.twig', ['sorties' => $sorties]);
     }
 
     #[Route("/DetailsProfil", name: "app_profilDetails")]

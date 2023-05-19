@@ -32,24 +32,23 @@ class SortieType extends AbstractType
                 'html5'=>true,
                 'widget' => 'single_text',
             ])
-            ->add('duree',  DateIntervalType::class, [
-                'label'=>'Durée',
-                'minutes' => range(0, 59),
-                'labels'=>[
-                    'invert' => null,
-                    'years' => null,
-                    'months' => null,
-                    'weeks' => null,
-                    'days' => null,
-                    'hours' => null,
-                    'minutes' => null,
-                    'seconds' => null,
-                ]
+            ->add('duree', DateIntervalType::class, [
+                'label' => 'Durée',
+                'with_years' => false,
+                'with_months' => false,
+                'with_days' => false,
+                'with_hours' => false,
+                'with_minutes' => true,
+                'with_seconds' => false,
+                'input' => 'dateinterval',
+                'widget' => 'choice',
+                'hours' => range(0, 5),
+                'minutes' => array_combine(range(10, 180), range(10, 180))
+            ])
                /* 'choices'=> array_combine(range(10,180), range(10, 180)),
                 'choice_label' => function($value){
                 return $value . ' minutes';
                 }*/
-            ])
             ->add('nbInscriptionsMax', ChoiceType::class, [
                 'label'=> 'Nombre de places',
                 'choices'=> array_combine(range(1, 50), range(1, 50)),

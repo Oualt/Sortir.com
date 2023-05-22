@@ -84,7 +84,6 @@ class Ville
                 $lieu->setVille(null);
             }
         }
-
         return $this;
     }
 }

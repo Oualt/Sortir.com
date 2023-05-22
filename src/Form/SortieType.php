@@ -26,15 +26,25 @@ class SortieType extends AbstractType
             ->add('nom', TextType::class, [
                 'label' => 'Nom de la sortie'
             ])
+
+            // ajout du champ dateHeureDebut dans le formulaire, contenant la date et l'heure de la sortie
             ->add('dateHeureDebut', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie',
-                'date_widget' => 'single_text'
+                'html5' => true,
+                'widget' => 'single_text',
+
             ])
-            ->add('dateLimiteInscription', DateType::class, [
+
+            // ajout du champ dateLimiteInscription dans le formulaire, contenant la date limite d'inscription à la sortie
+
+            ->add('dateLimiteInscription', DateTimeType::class, [
                 'label' => 'Date limite d inscription',
                 'html5' => true,
                 'widget' => 'single_text',
+
             ])
+
+            // ajout du champ duree dans le formulaire, contenant la durée de la sortie
             ->add('duree', DateIntervalType::class, [
                 'label' => 'Durée',
                 'with_years' => false,
@@ -52,24 +62,38 @@ class SortieType extends AbstractType
                 'choice_label' => function($value){
                 return $value . ' minutes';
                 }*/
+
+            // ajout du champ nbInscriptionsMax dans le formulaire, contenant le nombre de places maximum pour la sortie
             ->add('nbInscriptionsMax', ChoiceType::class, [
                 'label' => 'Nombre de places',
                 'choices' => array_combine(range(1, 50), range(1, 50)),
             ])
+
+            // ajout du champ infosSortie dans le formulaire, contenant la description et les infos de la sortie
             ->add('infosSortie', TextareaType::class, [
                 'label' => 'Description et infos',
             ])
+
+            // ajout du champ campus dans le formulaire, contenant le campus de la sortie
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
                 'choice_label' => 'nom',
             ])
+
+            // ajout du champ lieu dans le formulaire, contenant le lieu de la sortie
             ->add('lieu', EntityType::class, [
+                'mapped' => false, // pour ne pas avoir d'erreur 'no property found for entity
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
+                'required' => false,
             ])
+
+            // ajout du champ ville dans le formulaire, contenant la ville de la sortie
             ->add('ville', EntityType::class, [
+                'mapped' => false,
                 'class' => Ville::class,
                 'choice_label' => 'nom',
+                'required' => false,
             ]);
     }
 

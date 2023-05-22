@@ -7,9 +7,8 @@
 <h2>Créer une sortie</h2>
 {{ form_start(sortieForm) }}
 {{ form_label(sortieForm.campus) }}
-{{ form_start(villeForm) }}
     {{ form_widget(sortieForm) }}
-    {{ form_widget(villeForm) }}
+
 
 <container>
     <button>Enregistrer</button>
@@ -17,6 +16,6 @@
     <button>Annuler</button>
 </container>
 {{ form_end(sortieForm) }}
-{{ form_end(villeForm) }}
+
 
 {% endblock %}

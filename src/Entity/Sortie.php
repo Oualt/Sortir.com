@@ -193,8 +193,6 @@ class Sortie
         return $this;
     }
 
-
-
     public function getEtat(): ?Etat
     {
         return $this->etat;
@@ -218,6 +216,21 @@ class Sortie
 
         return $this;
     }
+
+    // acceder à ville qui est dans lieu
+    public function getVille(): ?Ville
+    {
+        return $this->getLieu()->getVille();
+    }
+
+    public function setVille(?Ville $ville): self
+    {
+        $this->getLieu()->setVille($ville);
+
+        return $this;
+    }
+
+
 
     /**
      * @return Collection<int, User>

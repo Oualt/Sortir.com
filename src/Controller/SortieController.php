@@ -17,6 +17,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\DatetimeInterface;
+
 
 class SortieController extends AbstractController
 {
@@ -48,6 +51,18 @@ class SortieController extends AbstractController
 
             $lieu = $sortieForm->get('lieu')->getData();
             $sortie->setLieu($lieu);
+
+            $ville = $sortieForm->get('lieu')->getData()->getVille();
+            $sortie->setVille($ville);
+
+            $dateHeureDebut = $sortieForm->get('dateHeureDebut')->getData();
+            // dateHeureDebut to dateTimeInterface
+            $dateHeureDebutFormatted = \DateTimeInterface::createFromFormat('Y-m-d H:i:s', $dateHeureDebut->format('YYYY-MM-DD hh:mm:ss'));
+            $sortie->setDateHeureDebut($dateHeureDebutFormatted);
+
+            $dateLimiteInscription = $sortieForm->get('dateLimiteInscription')->getData();
+            $dateLimiteInscriptionFormatted = $dateLimiteInscription->format('YYYY-MM-DD hh:mm:ss');
+            $sortie->setDateLimiteInscription($dateLimiteInscriptionFormatted);
 
             $entityManager->persist($sortie);
             $entityManager->flush();

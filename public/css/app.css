@@ -7,7 +7,7 @@ body {
     line-height: 1.5;
     color: #333;
 }
-h2, div {
+h2, .profil {
     text-align: center;
 }
 
@@ -17,6 +17,9 @@ div {
 a {
    color: white;
     text-decoration: none;
+}
+.lien{
+    color: #333333;
 }
 
 /* Gestion du Logo */
@@ -203,22 +206,60 @@ button:hover {
     background-color: lightgreen;
 }
 
-.searchForm {
-    position: relative;
-    left: 10px;
+
+
+
+
+
+/*gestion du tableau*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
 }
 
-.searchForm label {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+/* Style de l'en-tête du tableau */
+thead th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
 }
 
-.barreEtBouton {
-    margin-right: 1070px;
+/* Style des cellules du tableau */
+tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
-.barre {
-    border-radius: 30px;
+/* Style des liens dans le tableau */
+tbody td a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+/* Style des liens au survol */
+tbody td a:hover {
+    text-decoration: underline;
+}
+
+/* Style des cellules de l'état */
+tbody td:nth-child(6) {
+    text-align: center;
+}
+
+/* Style des cellules de l'organisateur */
+tbody td:nth-child(7) {
+    font-weight: bold;
+}
+
+/* Style des actions */
+tbody td:nth-child(8) {
+    text-align: center;
+}
+
+/* Style des lignes impaires */
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
 }

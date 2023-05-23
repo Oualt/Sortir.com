@@ -40,7 +40,7 @@ security:
     # - { path: ^/orga, roles: ROLE_ORGA }
     # - { path: ^/profile, roles: ROLE_USER }
     # - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    # - { path: ^/sortie/create, roles: ROLE_USER }
+     - { path: ^/sortie/create$, roles: ROLE_USER }
     # - { path: ^/sortie/modify, roles: ROLE_ORGA }
 
   role_hierarchy:

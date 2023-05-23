@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VilleRepository::class)]
+
 class Ville
 {
     #[ORM\Id]
@@ -61,7 +62,7 @@ class Ville
     /**
      * @return Collection<int, Lieu>
      */
-    public function getLieus(): Collection
+    public function getLieux(): Collection
     {
         return $this->lieus;
     }

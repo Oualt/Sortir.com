@@ -22,8 +22,11 @@ class MainController extends AbstractController
     }
 
     #[Route("/accueil", name: "main_accueil")]
-    public function accueil(ManagerRegistry $doctrine)
+    public function accueil(ManagerRegistry $doctrine, Request $request)
     {
+        $search = $request->query->get('search', '');
+
+        // Query the database to get the list of sorties
         $sorties = $doctrine
             ->getRepository(Sortie::class)
             ->createQueryBuilder('s')
@@ -37,6 +40,7 @@ class MainController extends AbstractController
         return $this->render('accueil.html.twig', [
             'form' => $searchForm->createView(),
             'sorties' => $sorties,
+            'search' => $search,
         ]);
     }
 

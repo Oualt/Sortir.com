@@ -30,7 +30,7 @@ class SortieType extends AbstractType
             // ajout du champ dateHeureDebut dans le formulaire, contenant la date et l'heure de la sortie
             ->add('dateHeureDebut', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie',
-                'html5' => true,
+                // 'html5' => true,
                 'widget' => 'single_text',
 
             ])

@@ -55,14 +55,18 @@ class SortieController extends AbstractController
             $ville = $sortieForm->get('lieu')->getData()->getVille();
             $sortie->setVille($ville);
 
-            $dateHeureDebut = $sortieForm->get('dateHeureDebut')->getData();
-            // dateHeureDebut to dateTimeInterface
-            $dateHeureDebutFormatted = \DateTimeInterface::createFromFormat('Y-m-d H:i:s', $dateHeureDebut->format('YYYY-MM-DD hh:mm:ss'));
-            $sortie->setDateHeureDebut($dateHeureDebutFormatted);
+            // $sortie->setDateHeureDebut(new \DateTime());
+            // $sortie->setDateLimiteInscription(new \DateTime());
 
-            $dateLimiteInscription = $sortieForm->get('dateLimiteInscription')->getData();
-            $dateLimiteInscriptionFormatted = $dateLimiteInscription->format('YYYY-MM-DD hh:mm:ss');
-            $sortie->setDateLimiteInscription($dateLimiteInscriptionFormatted);
+            // $dateHeureDebut = $sortieForm->get('dateHeureDebut')->getData();
+            // // dateHeureDebut to dateTimeInterface
+            // //$dateHeureDebutFormatted = \DateTime::createFromFormat('Y-m-d H:i:s', $dateHeureDebut->format('YYYY-MM-DD hh:mm:ss'));
+            // $dateHeureDebutFormatted = $dateHeureDebut->format('YYYY-MM-DD hh:mm:ss');
+            // $sortie->setDateHeureDebut($dateHeureDebutFormatted);
+
+            // $dateLimiteInscription = $sortieForm->get('dateLimiteInscription')->getData();
+            // $dateLimiteInscriptionFormatted = $dateLimiteInscription->format('YYYY-MM-DD hh:mm:ss');
+            // $sortie->setDateLimiteInscription($dateLimiteInscriptionFormatted);
 
             $entityManager->persist($sortie);
             $entityManager->flush();

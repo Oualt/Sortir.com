@@ -3,10 +3,10 @@
 {% block title %}{{ parent() }} | Accueil{% endblock %}
 
 {% block body %}
-    <h1>Accueuil</h1>
+    <h1>Accueil</h1>
     <div class="searchForm">
         {{ form_start(form) }}
-    {{ form_label(form.search, 'Le nom de la sortie contient :') }}
+    {{ form_label(form.search) }}
         <div class="barreEtBouton">
             {{ form_widget(form.search, { 'attr': {'class':'barre', 'placeholder': 'Rechercher...'} }) }}
             <button type="submit">Rechercher</button>
@@ -21,28 +21,35 @@
             <th>Date de la sortie</th>
             <th>Clôture</th>
             <th>inscrits/places</th>
+            <th>Durée</th>
             <th>État</th>
-            <th>Inscrit</th>
+
             <th>Organisateur</th>
             <th>Actions</th>
+
         </tr>
         </thead>
         <tbody>
         {% for sortie in sorties %}
             {% if search is empty or search in sortie.nom %}
+                {% if sortie.etat.id == '1' or '2' or '3' %}
+
             <tr>
                 <td>{{ sortie.nom }}</td>
                 <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
                 <td>{{ sortie.dateLimiteInscription |date('d/m/Y H:i')}}</td>
                 <td>{{ sortie.nbInscriptionsMax }}</td>
-                <td>{{ sortie.duree | date('Y-m-d-H-m-s') }}</td>
-                <td>{{ sortie.etat.libelle }}</td>
-                <td>{{ sortie.user.actif }}</td>
-                <td>{{ sortie.user.nom }}</td>
+                <td>{{ sortie.duree | date('%i') }}</td>
+                <td>{{ sortie.etat.id }}</td>
+                <td>{{ sortie.organisateur.nom }}</td>
+
                 <td>
-                    <a href="{{ path('sortie_details', {'id': sortie.id}) }}">Détails</a>
+                    <a href="{{ path('sortie_details', {'id': sortie.id}) }}" title="details" class="lien">Détails</a>
+
                 </td>
             </tr>
+
+                {% endif %}
             {% endif %}
         {% endfor %}
         </tbody>

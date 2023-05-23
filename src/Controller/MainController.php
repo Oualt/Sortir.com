@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
+use App\Form\SearchType;
+use App\Repository\SortieRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method getDoctrine()
@@ -21,14 +24,38 @@ class MainController extends AbstractController
     #[Route("/accueil", name: "main_accueil")]
     public function accueil(ManagerRegistry $doctrine)
     {
-        $sorties = $doctrine->getRepository(Sortie::class)->createQueryBuilder('s')
-            ->leftJoin('s.etat', 'e') // Jointure avec l'entité Etat
+        $sorties = $doctrine
+            ->getRepository(Sortie::class)
+            ->createQueryBuilder('s')
+            ->leftJoin('s.etat', 'e')
+            ->leftJoin('s.users', 'u')
             ->getQuery()
             ->getResult();
 
-        return $this->render('accueil.html.twig', ['sorties' => $sorties]);
+        $searchForm = $this->createForm(SearchType::class);
+
+        return $this->render('accueil.html.twig', [
+            'form' => $searchForm->createView(),
+            'sorties' => $sorties,
+        ]);
     }
 
+    #[Route("/search", name: "search_results")]
+    public function searchResults(Request $request, SortieRepository $sortieRepository)
+    {
+        $searchTerm = $request->query->get('search');
+
+        // Effectuer la recherche dans la base de données et récupérer les résultats
+        $sorties = $sortieRepository->searchSorties($searchTerm);
+
+        $searchForm = $this->createForm(SearchType::class);
+        $form = $searchForm->createView();
+
+        return $this->render('accueil.html.twig', [
+            'form' => $searchForm->createView(),
+            'sorties' => $sorties,
+        ]);
+    }
     #[Route("/DetailsProfil", name: "app_profilDetails")]
     public function detailsProfil()
     {

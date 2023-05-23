@@ -202,3 +202,23 @@ button:hover {
 .flash-success{
     background-color: lightgreen;
 }
+
+.searchForm {
+    position: relative;
+    left: 10px;
+}
+
+.searchForm label {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.barreEtBouton {
+    margin-right: 1070px;
+}
+
+.barre {
+    border-radius: 30px;
+}

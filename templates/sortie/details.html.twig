@@ -5,8 +5,8 @@
 {% block body %}
     <h2>Afficher une sortie</h2>
     <div>{{ sortie.nom }}</div>
-    <div>{{ sortie.dateHeureDebut }}</div>
-    <div>{{ sortie.dateLimiteInscription }}</div>
+    <div>{{ sortie.dateHeureDebut | date('d/m/Y') }}</div>
+    <div>{{ sortie.dateLimiteInscription | date ('d-m-Y-H-i') }}</div>
     <div>{{ sortie.duree }}</div>
     <div>{{ sortie.nbInscriptionsMax }}</div>
     <div>{{ sortie.infosSortie }}</div>

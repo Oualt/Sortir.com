@@ -16,6 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SortieType extends AbstractType
@@ -56,7 +59,8 @@ class SortieType extends AbstractType
                 'input' => 'dateinterval',
                 'widget' => 'choice',
                 'hours' => range(0, 5),
-                'minutes' => array_combine(range(10, 180), range(10, 180))
+                'minutes' => array_combine(range(10, 180), range(10, 180)),
+                'attr' =>['class' => 'duree']
             ])
             /* 'choices'=> array_combine(range(10,180), range(10, 180)),
                 'choice_label' => function($value){
@@ -80,21 +84,45 @@ class SortieType extends AbstractType
                 'choice_label' => 'nom',
             ])
 
-            // ajout du champ lieu dans le formulaire, contenant le lieu de la sortie
-            ->add('lieu', EntityType::class, [
-                'mapped' => false, // pour ne pas avoir d'erreur 'no property found for entity
-                'class' => Lieu::class,
-                'choice_label' => 'nom',
-                'required' => false,
-            ])
-
             // ajout du champ ville dans le formulaire, contenant la ville de la sortie
             ->add('ville', EntityType::class, [
                 'mapped' => false,
                 'class' => Ville::class,
                 'choice_label' => 'nom',
                 'required' => false,
+                'placeholder'=> 'Ville',
+                'label'=> 'Ville'
+            ])
+
+            // ajout du champ lieu dans le formulaire, contenant le lieu de la sortie
+            ->add('lieu',EntityType::class, [
+                'mapped' => false,
+                'class' => Lieu::class,
+                'choice_label' => 'nom',
+                'required' => false,
+                'placeholder'=> 'Lieu'
             ]);
+
+
+           /* $formModifier = function (FormInterface $form, Ville $ville ){
+                $lieu = $ville->getLieux();
+
+                $form->add('lieu', EntityType::class, [
+                    'class'=> Lieu::class,
+                    'choices'=> $lieu,
+                    'choice_label'=> 'nom',
+                    'placeholder'=> 'Lieu (Choisir une ville)',
+                    'label'=> 'Lieu'
+                ]);
+            };
+
+            $builder->get('ville')->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (formEvent $event) use ($formModifier){
+                    $ville = $event->getForm()->getData();
+                    $formModifier($event->getForm()->getParent(), $ville);
+                }
+            );*/
     }
 
     public function configureOptions(OptionsResolver $resolver): void

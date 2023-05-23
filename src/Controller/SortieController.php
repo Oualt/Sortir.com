@@ -34,6 +34,9 @@ class SortieController extends AbstractController
         $sortie = new Sortie();
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $action = $request->request->get('action');
+
+
 
         $sortieForm->handleRequest($request);
         if ($sortieForm->isSubmitted()) {
@@ -45,7 +48,18 @@ class SortieController extends AbstractController
             $ville = $sortieForm->get('ville')->getData();
 
             $etatRepository = $entityManager->getRepository(Etat::class);
-            $etatCree = $etatRepository->findOneBy(['libelle' => 'enCreation']);
+            if ($action === 'enregistrer') {
+                // Traitement pour le bouton "Enregistrer"
+                $etatCree = $etatRepository->findOneBy(['libelle' => 'enCreation']);
+            } elseif ($action === 'publier') {
+                // Traitement pour le bouton "Publier la sortie"
+                $etatCree = $etatRepository->findOneBy(['libelle' => 'ouverte']);
+            } elseif ($action === 'annuler') {
+                // Traitement pour le bouton "Annuler"
+                $this->addFlash('failure', 'La sortie a bien été annulée');
+                return $this->redirectToRoute('main_accueil', ['id' => $sortie->getId()]);
+            }
+
             // ajouter manuellement les états dans la base de données : enCreation, ouverte, cloturee, enCours, terminee, annulee
             $sortie->setEtat($etatCree);
 

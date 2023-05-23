@@ -3,11 +3,11 @@
 {% block title %}{{ parent() }} | Détails {{ sortie.nom }}{% endblock %}
 
 {% block body %}
-    <h2>Afficher une sortie</h2>
-    <div>{{ sortie.nom }}</div>
-    <div>{{ sortie.dateHeureDebut | date('d/m/Y') }}</div>
-    <div>{{ sortie.dateLimiteInscription | date('d-m-Y-H-i') }}</div>
-    <div>{{ sortie.duree | date('m') }}</div>
-    <div>{{ sortie.nbInscriptionsMax }}</div>
-    <div>{{ sortie.infosSortie }}</div>
+    <h2>{{ sortie.nom }}</h2>
+
+    <div class="profil">Date de la sortie: {{ sortie.dateHeureDebut | date('d/m/Y') }}</div>
+    <div class="profil">Date limite d'inscription: {{ sortie.dateLimiteInscription | date('d-m-Y-H-i') }}</div>
+    <div class="profil">Durée de l'activité: {{ sortie.duree |date('%i') }} min</div>
+    <div class="profil">Nbr de places: {{ sortie.nbInscriptionsMax }} </div>
+    <div class="profil">Description: {{ sortie.infosSortie }}</div>
 {% endblock %}

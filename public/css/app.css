@@ -12,7 +12,7 @@ h2, .profil {
 }
 
 div {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 a {
    color: white;
@@ -263,3 +263,5 @@ tbody td:nth-child(8) {
 tbody tr:nth-child(odd) {
     background-color: #f9f9f9;
 }
+
+

@@ -5,9 +5,31 @@
 {% block body %}
 
 <h2>Créer une sortie</h2>
-{{ form_start(sortieForm) }}
-{{ form_label(sortieForm.campus) }}
-    {{ form_widget(sortieForm) }}
+    {{ form_start(sortieForm) }}
+
+    {{ form_row(sortieForm.nom) }}
+
+    {{ form_row(sortieForm.dateHeureDebut, {
+        'attr': {'class': 'flatpickr-input'}
+    }) }}
+
+    {{ form_row(sortieForm.dateLimiteInscription, {
+        'attr': {'class': 'flatpickr-input'}
+    }) }}
+
+    {{ form_row(sortieForm.duree)  }}
+
+    {{ form_row(sortieForm.nbInscriptionsMax) }}
+
+    {{ form_row(sortieForm.infosSortie) }}
+
+    {{ form_row(sortieForm.campus) }}
+
+    {{ form_row(sortieForm.ville) }}
+
+    {{ form_row(sortieForm.lieu) }}
+
+    {{ form_end(sortieForm) }}
 
 
 <container>
@@ -15,7 +37,49 @@
     <button>Publier la sortie</button>
     <button>Annuler</button>
 </container>
-{{ form_end(sortieForm) }}
+    <script>
+        flatpickr('.flatpickr-input', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            locale: 'fr'
+        });
+    </script>
 
+
+
+{% endblock %}
+
+{% block javascript %}
+
+    <script>
+        //On va chercher la ville
+        window.onload = () => {
+        let ville = document.querySelector("#sortie_ville");
+
+        ville.addEventListener("change", function (){
+            let form = this.closest("form");
+            let data = this.name + "=" + this.value;
+
+
+            fetch(form.action, {
+                method: form.getAttribute("method"),
+                body: data,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded; charset:utf-8"
+                }
+            })
+        .then(response => response.text())
+        .then(html=>{
+            let content = document.createElement("html");
+            content.innerHTML = html;
+            let nouveauSelect = content.querySelector("#sortie_ville");
+            document.querySelector("#sortie_ville").replaceWith(nouveauSelect);
+    })
+        .catch(error=>{
+            console.log(error);
+    })
+        });
+    };
+    </script>
 
 {% endblock %}

@@ -19,7 +19,7 @@ class UserController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
     /**
      * @Route("/profile/update", name="update_profile", methods={"POST"})
      */
-    public function updateProfile(Request $request): Response
+    public function updateProfile(Request $request,): Response
     {
         // Récupérer l'utilisateur actuellement connecté
         $user = $this->getUser();
@@ -31,12 +31,16 @@ class UserController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
         $telephone = $request->request->get('telephone');
         $email = $request->request->get('email');
 
+
+
+
         // Mettre à jour les informations du profil de l'utilisateur
         $user->setPseudo($pseudo);
         $user->setNom($nom);
         $user->setPrenom($prenom);
         $user->setTelephone($telephone);
         $user->setEmail($email);
+
 
         // Enregistrer les modifications dans la base de données
         $entityManager = $this->managerRegistry->getManager();

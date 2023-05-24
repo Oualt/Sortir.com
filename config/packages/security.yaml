@@ -19,6 +19,8 @@ security:
         secret: "%kernel.secret%"
         lifetime: 604800 # 1 semaine en secondes
         path: /
+        name: APP_REMEMBER_ME
+        remember_me_parameter: _remember_me
       lazy: true
       provider: app_user_provider
       logout:

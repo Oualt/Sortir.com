@@ -7,17 +7,27 @@ use App\Form\RegistrationFormType;
 use App\Security\AppAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    public function register(Request $request,
+                             UserPasswordHasherInterface $userPasswordHasher,
+                             UserAuthenticatorInterface $userAuthenticator,
+                             AppAuthenticator $authenticator,
+                             TokenStorageInterface $tokenStorage,
+                             EntityManagerInterface $entityManager,
+                             AuthorizationCheckerInterface $authorizationChecker): Response
     {
         $user = new User();
         $user->setRoles(['ROLE_USER']);
@@ -41,7 +51,15 @@ class RegistrationController extends AbstractController
 
         $entityManager->persist($user);
         $entityManager->flush();
-        // do anything else you need here, like send an email
+
+        if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new AccessDeniedException('This action is not allowed.');
+        }
+
+        $token = new UsernamePasswordToken($user, 'main', (array)'ROLE_USER', $user->getRoles());
+        $tokenStorage->setToken($token);
+
+        // message falsh a la creation du profil
         $this->addFlash('success', 'Profil créé avec succes !');
         return $this->redirectToRoute('main_accueil', ['id' => $user->getId()]);
     }

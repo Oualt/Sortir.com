@@ -127,6 +127,8 @@ form{
 }
 /* Forcer tous les champs de texte à la même taille */
 input[type="text"],
+input[type="email"],
+input[type="password"],
 textarea
 {
 
@@ -138,6 +140,8 @@ textarea
 
 /* Style pour les cases de texte */
 input[type="text"],
+input[type="email"],
+nput[type="password"],
 textarea
 
 {
@@ -147,6 +151,10 @@ textarea
     max-width: 40%;
     width: 300px;
 
+}
+input[type="checkbox"]
+{
+ text-align: left;
 }
 
 /* Style pour les cases de sélection */

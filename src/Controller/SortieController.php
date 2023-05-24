@@ -125,7 +125,6 @@ class SortieController extends AbstractController
             'sortie' => $sortie,
             'user' => $this->getUser(),
             'sortieForm' => $sortieForm->createView()
-            
         ]);
     }
 
@@ -149,6 +148,29 @@ class SortieController extends AbstractController
         $sortie = $sortieRepository->find($id);
 
         $action = $request->request->get('action');
+
+        // Récupérer les données soumises dans le formulaire
+        $nom = $request->request->get('nom');
+        $dateEtHeure = $request->request->get('dateEtHeure');
+        $dateLimite = $request->request->get('dateLimite');
+        $duree = $request->request->get('duree');
+        $places = $request->request->get('places');
+        $description = $request->request->get('description');
+        $campus = $request->request->get('campus');
+        $ville = $request->request->get('ville');
+        $lieu = $request->request->get('lieu');
+
+
+        // Mettre à jour les informations du profil de l'utilisateur
+        $sortie->setNom($nom);
+        $sortie->setDateHeureDebut($dateEtHeure);
+        $sortie->setDateLimiteInscription($dateLimite);
+        $sortie->setDuree($duree);
+        $sortie->setNbInscriptionsMax($places);
+        $sortie->setInfosSortie($description);
+        $sortie->setCampus($campus);
+        $sortie->setVille($ville);
+        $sortie->setLieu($lieu);
 
         $etatRepository = $entityManager->getRepository(Etat::class);
         if ($action === 'publier') {

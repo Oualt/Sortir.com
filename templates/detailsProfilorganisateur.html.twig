@@ -1,0 +1,13 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}{{ parent() }} | Détails {{ organisateur.nom }}{% endblock %}
+
+{% block body %}
+    <h2>Détails du profil</h2>
+
+    <div class="profil">Nom: {{ organisateur.nom }}</div>
+    <div class="profil">Prénom: {{ organisateur.prenom }}</div>
+    <div class="profil">Email: {{ organisateur.email }}</div>
+    <!-- Ajoutez d'autres détails de l'organisateur selon vos besoins -->
+
+{% endblock %}

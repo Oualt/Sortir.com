@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
         $tokenStorage->setToken($token);
 
         // message falsh a la creation du profil
-        $this->addFlash('success', 'Profil créé avec succes !');
+        $this->addFlash('success', 'Profil créé avec succès !');
         return $this->redirectToRoute('main_accueil', ['id' => $user->getId()]);
     }
             return $userAuthenticator->authenticateUser(

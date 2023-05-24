@@ -46,7 +46,9 @@ class UserController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
         $entityManager = $this->managerRegistry->getManager();
         $entityManager->flush();
 
+
         // Rediriger vers la page de détails du profil après la mise à jour
+        $this->addFlash('success', 'Profil modifié avec succès !');
         return $this->redirectToRoute('app_profilDetails');
     }
 }

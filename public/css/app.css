@@ -27,7 +27,21 @@ a {
 }
 .participant{
     text-align: center;
+}
 
+.centered-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 200px; /* Remplacez la valeur par la largeur maximale souhaitée */
+    height: auto; /* Assurez-vous que la hauteur s'ajuste automatiquement pour conserver les proportions de l'image */
+}
+
+.profil-image{
+
+    max-width: 30px; /* Remplacez la valeur par la largeur maximale souhaitée */
+    height: auto;
+    vertical-align: center;
 }
 
 /* Gestion du Logo */

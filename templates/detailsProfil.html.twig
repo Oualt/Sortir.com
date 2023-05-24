@@ -4,14 +4,16 @@
 
 {% block body %}
     <h2>Details du Profil de {{ app.user.pseudo }}</h2>
+    <img src="{{ asset('directory_to_upload/'~app.user.image) }}" alt="Profile Picture" class="centered-image">
     <div class="profil">
+
     Prénom:    {{app.user.prenom }}<br>
     Nom:       {{ app.user.nom }}<br>
     Téléphone: {{ app.user.telephone }}<br>
     Email: {{ app.user.email }}<br>
     Campus: {{ app.user.campus.nom }}
-    </div>
 
+    </div>
 <container>
     <a href="{{ path('app_profilUpdate') }}">
     <button name="update" value="update">Modifier le profil</button>
@@ -19,6 +21,5 @@
 </container>
 
 {% endblock %}
-
 
 

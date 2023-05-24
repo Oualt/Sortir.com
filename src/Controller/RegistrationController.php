@@ -8,6 +8,7 @@ use App\Security\AppAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -48,6 +49,27 @@ class RegistrationController extends AbstractController
             )
 
         );
+        // Récupérer le fichier de la photo de profil
+        $photoFile = $form->get('maPhoto')->getData();
+
+        // Vérifier si un fichier a été téléchargé
+        if ($photoFile) {
+            // Gérer le fichier, par exemple, déplacer le fichier vers un répertoire spécifique
+            $newFilename = $timestamp = time(); // Timestamp actuel
+            $extension = $photoFile->guessExtension(); // Obtenir l'extension du fichier d'origine
+            $newFilename = $timestamp . '.' . $extension; // Combinaison du timestamp et de l'extension// Générer un nom de fichier unique
+        try {
+            $photoFile->move(
+                'directory_to_upload', // Répertoire de destination
+                $newFilename
+            );
+        } catch (FileException $e) {
+            // Gérer les erreurs liées au téléchargement du fichier
+        }
+
+        // Mettre à jour le champ "maPhoto" de l'utilisateur avec le nom du fichier ou le chemin d'accès
+        $user->setImage($newFilename);
+    }
 
         $entityManager->persist($user);
         $entityManager->flush();

@@ -44,6 +44,17 @@ class UserController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
         $user->setTelephone($telephone);
         $user->setEmail($email);
 
+        // Gérer le téléchargement de la nouvelle image de profil
+        $file = $request->files->get('registration_form')['maPhoto'];
+        if ($file) {
+            // Gérer le téléchargement de l'image
+            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+            $file->move($this->getParameter('photos_directory'), $fileName);
+
+            // Mettre à jour le chemin de l'image dans l'entité utilisateur
+            $user->setImage($fileName);
+        }
+
 
         // Enregistrer les modifications dans la base de données
         $entityManager = $this->managerRegistry->getManager();

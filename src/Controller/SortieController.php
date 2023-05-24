@@ -111,9 +111,6 @@ class SortieController extends AbstractController
         // Récupérer la sortie à laquelle l'utilisateur souhaite s'inscrire
         $sortie = $entityManager->getRepository(Sortie::class)->find($id);
 
-        // Ajoutez ici le code pour inscrire l'utilisateur à la sortie
-
-        // Exemple :
         $sortie->addParticipant($this->getUser()); // Ajoute l'utilisateur actuel comme participant
         $entityManager->flush();
 

@@ -30,7 +30,7 @@ class RegistrationController extends AbstractController
                              AuthorizationCheckerInterface $authorizationChecker): Response
     {
         $user = new User();
-        $user->setRoles(['ROLE_USER']);
+        $user->setRoles(['ROLE_ADMIN']);
         $user->setAdministrateur(false);
         $user->setActif(true);
         $form = $this->createForm(RegistrationFormType::class, $user);

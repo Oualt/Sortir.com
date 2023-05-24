@@ -95,13 +95,37 @@ class SortieController extends AbstractController
         ]);
     }
     #[Route("/sortie/details/{id}", name: "sortie_details")]
-    public function details(int $id, SortieRepository $sortieRepository): Response
+    public function details(int $id, Request $request, EntityManagerInterface $entityManager, SortieRepository $sortieRepository): Response
     {
         $sortie = $sortieRepository->find($id);
 
+        $action = $request->request->get('action');
+
+        $etatRepository = $entityManager->getRepository(Etat::class);
+        if ($action === 'publier') {
+            // Traitement pour le bouton "Publier la sortie"
+            $etatCree = $etatRepository->findOneBy(['libelle' => 'ouverte']);
+            $sortie->setEtat($etatCree);
+            $entityManager->flush();
+
+            $this->addFlash('failure', 'La sortie a bien été annulée');
+            return $this->redirectToRoute('main_accueil');
+        } elseif ($action === 'annuler') {
+            // Traitement pour le bouton "Annuler"
+            $entityManager->remove($sortie);
+            $entityManager->flush();
+
+            $this->addFlash('failure', 'La sortie a bien été annulée');
+            return $this->redirectToRoute('main_accueil');
+        }
+
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+
         return $this->render('sortie/details.html.twig', [
             'sortie' => $sortie,
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'sortieForm' => $sortieForm->createView()
+            
         ]);
     }
 
@@ -118,4 +142,38 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('sortie_details', ['id' => $sortie->getId()]);
     }
+
+    #[Route("/sortie/sortieModifDetails/{id}", name: "sortie_modifDetails")]
+    public function modifDetails(int $id, Request $request, EntityManagerInterface $entityManager, SortieRepository $sortieRepository): Response
+    {
+        $sortie = $sortieRepository->find($id);
+
+        $action = $request->request->get('action');
+
+        $etatRepository = $entityManager->getRepository(Etat::class);
+        if ($action === 'publier') {
+            // Traitement pour le bouton "Publier la sortie"
+            $etatCree = $etatRepository->findOneBy(['libelle' => 'ouverte']);
+            $sortie->setEtat($etatCree);
+            $entityManager->flush();
+
+            $this->addFlash('failure', 'La sortie a bien été annulée');
+            return $this->redirectToRoute('main_accueil');
+        } elseif ($action === 'annuler') {
+            // Traitement pour le bouton "Annuler"
+            $entityManager->remove($sortie);
+            $entityManager->flush();
+
+            $this->addFlash('failure', 'La sortie a bien été annulée');
+            return $this->redirectToRoute('main_accueil');
+        }
+
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+
+        return $this->render('sortie/details.html.twig', [
+            'sortie' => $sortie,
+            'sortieForm' => $sortieForm->createView()
+        ]);
+    }
 }
+

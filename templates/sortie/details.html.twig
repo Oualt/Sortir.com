@@ -11,6 +11,42 @@
     <div class="profil">Nbr de places: {{ sortie.nbInscriptionsMax }} </div>
     <div class="profil">Description: {{ sortie.infosSortie }}</div>
     <div class="profil">Campus: {{ sortie.campus.nom }}</div>
+    <div class="profil">Organisateur: {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }}</div>
+    {% if sortie.organisateur == app.user or app.user.roles[0] == 'ROLE_ADMIN' %}
+       <div class="profil"> Etat : 
+        {% if sortie.getEtat().getLibelle() == 'enCreation' %}
+            La sortie n'est pas publiée et n'est pas encore ouverte aux inscriptions.
+        {% elseif sortie.getEtat().getLibelle() == 'ouverte' %}
+            La sortie est publiée et ouverte aux inscriptions.
+        {% elseif sortie.getEtat().getLibelle() == 'cloturee' %}
+            La sortie est clôturée. Il n'est plus possible de s'inscrire.
+        {% elseif sortie.getEtat().getLibelle() == 'enCours' %}
+            La sortie est en cours.
+        {% elseif sortie.getEtat().getLibelle() == 'passee' %}
+            La sortie est terminée.
+        {% endif %}
+    {% endif %}
+</div>
+{% if app.user.roles[0] == 'ROLE_USER' %}
+    
+        {% if sortie.getEtat().getLibelle() == 'cloturee' %}
+    <div class="profil"> Etat : La sortie est clôturée. Il n'est plus possible de s'inscrire. </div>
+        {% elseif sortie.getEtat().getLibelle() == 'enCours' %}
+            <div class="profil"> Etat : La sortie est en cours. </div>
+        {% elseif sortie.getEtat().getLibelle() == 'passee' %}
+            <div class="profil"> Etat : La sortie est terminée. </div>
+        {% endif %}
+    
+    {% endif %}
+
+    {% if sortie.organisateur == app.user or app.user.roles[0] == 'ROLE_ADMIN' %}
+        <form method="post" action="{{ path('sortie_details', {'id': sortie.id}) }}">
+            {% if sortie.getEtat().getLibelle() == 'enCreation' %}
+            <button type="submit" name="action" value="publier">Publier la sortie</button>
+            {% endif %}
+            <button type="submit" name="action" value="annuler">Annuler la sortie</button>
+        </form>
+    {% endif %}
 
     {# Ajoutez le bouton d'inscription #}
     {% if not sortie.sontInscrits.contains(user) %}

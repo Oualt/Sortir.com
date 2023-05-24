@@ -75,4 +75,10 @@ class MainController extends AbstractController
     {
         return $this->render('campus.html.twig');
     }
+
+    #[Route("/UpdateProfil", name: "app_profilUpdate")]
+public function updateProfil()
+    {
+        return $this->render('updateUser.html.twig');
+    }
 }

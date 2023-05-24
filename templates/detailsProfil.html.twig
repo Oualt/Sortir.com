@@ -1,5 +1,7 @@
 {% extends 'main.html.twig' %}
 
+{% block title %}{{ parent() }} | Détails {{ app.user.pseudo }}{% endblock %}
+
 {% block body %}
     <h2>Details du Profil de {{ app.user.pseudo }}</h2>
     <div class="profil">
@@ -10,10 +12,13 @@
     Campus: {{ app.user.campus.nom }}
     </div>
 
+<container>
+    <a href="{{ path('app_profilUpdate') }}">
+    <button name="update" value="update">Modifier le profil</button>
+    </a>
+</container>
 
 {% endblock %}
 
-{% block title %}
 
-{% endblock %}
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -70,6 +71,11 @@ class Sortie
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'estInscrit')]
     private Collection $users;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'sontInscrits')]
+    private Collection $participants;
+
+
 
     public function __construct()
     {
@@ -263,4 +269,33 @@ class Sortie
     {
         return $this->getSontInscrits()->count();
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(User $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+            $participant->addSortie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(User $participant): self
+    {
+        if ($this->participants->removeElement($participant)) {
+            $participant->removeSortie($this);
+        }
+
+        return $this;
+    }
+
+
 }

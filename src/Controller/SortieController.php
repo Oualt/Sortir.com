@@ -100,7 +100,25 @@ class SortieController extends AbstractController
         $sortie = $sortieRepository->find($id);
 
         return $this->render('sortie/details.html.twig', [
-            'sortie' => $sortie
+            'sortie' => $sortie,
+            'user' => $this->getUser()
         ]);
+    }
+
+    #[Route("/sortie/inscription/{id}", name: "sortie_inscription")]
+    public function inscription(int $id, EntityManagerInterface $entityManager): Response
+    {
+        // Récupérer la sortie à laquelle l'utilisateur souhaite s'inscrire
+        $sortie = $entityManager->getRepository(Sortie::class)->find($id);
+
+        // Ajoutez ici le code pour inscrire l'utilisateur à la sortie
+
+        // Exemple :
+        $sortie->addParticipant($this->getUser()); // Ajoute l'utilisateur actuel comme participant
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Vous êtes inscrit à la sortie !');
+
+        return $this->redirectToRoute('sortie_details', ['id' => $sortie->getId()]);
     }
 }

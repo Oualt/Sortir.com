@@ -59,6 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Sortie::class, inversedBy: 'users')]
     private Collection $estInscrit;
 
+
     public function __construct()
     {
         $this->estInscrit = new ArrayCollection();
@@ -229,6 +230,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function addSortie(Sortie $sortie): self
+    {
+        if (!$this->estInscrit->contains($sortie)) {
+            $this->estInscrit[] = $sortie;
+            $sortie->addUser($this);
+        }
+
+        return $this;
+    }
+
 
     /**
      * @return Collection<int, Sortie>

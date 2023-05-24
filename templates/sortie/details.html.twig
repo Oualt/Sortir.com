@@ -11,4 +11,13 @@
     <div class="profil">Nbr de places: {{ sortie.nbInscriptionsMax }} </div>
     <div class="profil">Description: {{ sortie.infosSortie }}</div>
     <div class="profil">Campus: {{ sortie.campus.nom }}</div>
+
+    {# Ajoutez le bouton d'inscription #}
+    {% if not sortie.sontInscrits.contains(user) %}
+        <form action="{{ path('sortie_inscription', {'id': sortie.id}) }}" method="post">
+            <button type="submit">S'inscrire</button>
+        </form>
+    {% else %}
+        <p>Vous êtes déjà inscrit à cette sortie.</p>
+    {% endif %}
 {% endblock %}

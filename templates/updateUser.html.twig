@@ -1,0 +1,36 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}{{ parent() }} | Update {{ app.user.pseudo }}{% endblock %}
+
+{% block body %}
+
+
+    <h2 href="">Modifier le profil</h2>
+    <form method="post" action="{{ path('update_profile') }}">
+        <div>
+            <label for="pseudo">Pseudo:</label>
+            <input type="text" id="pseudo" name="pseudo" value="{{ app.user.pseudo }}">
+        </div>
+        <div>
+            <label for="nom">Nom:</label>
+            <input type="text" id="nom" name="nom" value="{{ app.user.nom }}">
+        </div>
+        <div>
+            <label for="prenom">Prénom:</label>
+            <input type="text" id="prenom" name="prenom" value="{{ app.user.prenom }}">
+        </div>
+        <div>
+            <label for="telephone">Téléphone:</label>
+            <input type="text" id="telephone" name="telephone" value="{{ app.user.telephone }}">
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ app.user.email }}">
+        </div>
+        <div>
+            <input type="submit" value="Enregistrer les modifications">
+        </div>
+    </form>
+
+
+{% endblock %}

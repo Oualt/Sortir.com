@@ -7,7 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}Sortir.com{% endblock %}</title>
         <!-- Inclure Flatpickr -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text&family=Manrope:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
@@ -32,8 +35,6 @@
             <li><a href="{{ path('app_villes') }}" title="villes">Villes</a></li>
             <li><a href="{{ path('app_campus') }}" title="campus">Campus</a></li>
             {% endif %}
-
-
         </ul>
     </nav>
 </header>
@@ -42,6 +43,7 @@
 {% for label, messages in app.flashes %}
     {% for message in messages %}
         <div class="flash flash-{{ label }}">
+
             {{ message }}
         </div>
     {% endfor %}

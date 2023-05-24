@@ -33,14 +33,16 @@
                 <td>{{ sortie.nom }}</td>
                 <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
                 <td>{{ sortie.dateLimiteInscription |date('d/m/Y H:i')}}</td>
-                <td>{{ sortie.getNbInscrits() }}/{{ sortie.nbInscriptionsMax }}</td>
+                <td class="nbInscrits">{{ sortie.getNbInscrits() }}/{{ sortie.nbInscriptionsMax }}</td>
+
+
                 <td>{{ sortie.duree | date('%i') }}</td>
                 <td>{{ sortie.etat.id }}</td>
                 <td>{{ sortie.organisateur.nom }}</td>
                 <td>{{ sortie.campus.id }}</td>
                 <td>
                     <a href="{{ path('sortie_details', {'id': sortie.id}) }}" title="details" class="lien">Détails</a>
-
+                <td class="nbInscrits" onclick="loadParticipants('{{ sortie.id }}')">{{ sortie.getNbInscrits() }}/{{ sortie.nbInscriptionsMax }}</td>
                 </td>
             </tr>
         {% endfor %}

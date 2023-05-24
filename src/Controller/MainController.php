@@ -94,6 +94,20 @@ class MainController extends AbstractController
         ]);
     }
 
+    #[Route("/DetailsProfil/{id}", name: "app_profilDetailsParticipant")]
+    public function detailsProfilParticipant($id)
+    {
+        $p = $this->managerRegistry->getRepository(User::class)->find($id);
+
+        if (!$p) {
+            throw $this->createNotFoundException('L\'utilisateur avec l\'ID '.$id.' n\'existe pas.');
+        }
+
+        return $this->render('detailsProfilParticipant.html.twig', [
+            'participant' => $p,
+        ]);
+    }
+
 
     #[Route("/admin/villes", name: "app_villes")]
     public function villes()

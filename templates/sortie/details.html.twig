@@ -12,6 +12,15 @@
     <div class="profil">Description: {{ sortie.infosSortie }}</div>
     <div class="profil">Campus: {{ sortie.campus.nom }}</div>
     <div class="profil">Organisateur: <a class="lien" href="{{ path('app_profilDetailsOrganisateur',{id: sortie.organisateur.id}) }}">{{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }}</a></div>
+    <h3>Liste des participants :</h3>
+
+        {% for participant in sortie.participants %}
+<div class="participant">
+                <a href="{{ path('app_profilDetailsParticipant', {id: participant.id}) }}" class="lien"> {{ participant.prenom }} {{ participant.nom }} </a>
+            <br>
+</div>
+
+        {% endfor %}
 
     {% if sortie.organisateur == app.user or app.user.roles[0] == 'ROLE_ADMIN' %}
        <div class="profil"> Etat : 
@@ -55,6 +64,6 @@
             <button type="submit">S'inscrire</button>
         </form>
     {% else %}
-        <p>Vous êtes déjà inscrit à cette sortie.</p>
+        <div class="success" >Vous êtes déjà inscrit à cette sortie.</div>
     {% endif %}
 {% endblock %}

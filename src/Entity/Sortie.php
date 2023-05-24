@@ -258,4 +258,9 @@ class Sortie
 
         return $this;
     }
+
+    public function getNbInscrits(): int
+    {
+        return $this->getSontInscrits()->count();
+    }
 }

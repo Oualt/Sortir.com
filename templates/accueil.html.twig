@@ -4,15 +4,13 @@
 
 {% block body %}
     <h1>Accueil</h1>
-    <div class="searchForm">
-        {{ form_start(form) }}
-    {{ form_label(form.search) }}
-        <div class="barreEtBouton">
-            {{ form_widget(form.search, { 'attr': {'class':'barre', 'placeholder': 'Rechercher...'} }) }}
-            <button type="submit">Rechercher</button>
-        </div>
-    {{ form_end(form) }}
+
+    {{ form_start(form) }}
+    <div class="barreEtBouton">
+        {{ form_row(form.search, {'attr': {'class':'barre', 'placeholder': 'Rechercher...'}}) }}
+        <button type="submit">Rechercher</button>
     </div>
+    {{ form_end(form) }}
 
     <table>
         <thead>
@@ -31,26 +29,19 @@
         </thead>
         <tbody>
         {% for sortie in sorties %}
-            {% if search is empty or search in sortie.nom %}
-                {% if sortie.etat.id == '1' or '2' or '3' %}
-
             <tr>
                 <td>{{ sortie.nom }}</td>
                 <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
                 <td>{{ sortie.dateLimiteInscription |date('d/m/Y H:i')}}</td>
-                <td>{{ sortie.nbInscriptionsMax }}</td>
+                <td>{{ sortie.getNbInscrits() }}/{{ sortie.nbInscriptionsMax }}</td>
                 <td>{{ sortie.duree | date('%i') }}</td>
                 <td>{{ sortie.etat.id }}</td>
                 <td>{{ sortie.organisateur.nom }}</td>
-
                 <td>
                     <a href="{{ path('sortie_details', {'id': sortie.id}) }}" title="details" class="lien">Détails</a>
 
                 </td>
             </tr>
-
-                {% endif %}
-            {% endif %}
         {% endfor %}
         </tbody>
     </table>

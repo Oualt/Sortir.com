@@ -24,36 +24,27 @@ class MainController extends AbstractController
     #[Route("/accueil", name: "main_accueil")]
     public function accueil(ManagerRegistry $doctrine, Request $request)
     {
-        $search = $request->query->get('search', '');
-
-        // Query the database to get the list of sorties
-        $sorties = $doctrine
+        $queryBuilder = $doctrine
             ->getRepository(Sortie::class)
             ->createQueryBuilder('s')
             ->leftJoin('s.etat', 'e')
-            ->leftJoin('s.users', 'u')
-            ->getQuery()
-            ->getResult();
+            ->leftJoin('s.users', 'u');
 
         $searchForm = $this->createForm(SearchType::class);
+        $searchForm->handleRequest($request);
 
-        return $this->render('accueil.html.twig', [
-            'form' => $searchForm->createView(),
-            'sorties' => $sorties,
-            'search' => $search,
-        ]);
-    }
-
-    #[Route("/search", name: "search_results")]
-    public function searchResults(Request $request, SortieRepository $sortieRepository)
-    {
-        $searchTerm = $request->query->get('search');
-
-        // Effectuer la recherche dans la base de données et récupérer les résultats
-        $sorties = $sortieRepository->searchSorties($searchTerm);
-
-        $searchForm = $this->createForm(SearchType::class);
-        $form = $searchForm->createView();
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $search = $searchForm->get('search')->getData();
+            $sorties = $queryBuilder
+                ->andWhere('LOWER(s.nom) LIKE :search')
+                ->setParameter('search', '%'.strtolower($search).'%')
+                ->getQuery()
+                ->getResult();
+        } else {
+            $sorties = $queryBuilder
+                ->getQuery()
+                ->getResult();
+        }
 
         return $this->render('accueil.html.twig', [
             'form' => $searchForm->createView(),

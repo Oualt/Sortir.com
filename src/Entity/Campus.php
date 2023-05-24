@@ -33,7 +33,10 @@ class Campus
         $this->siteOrganisateur = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
-
+    public function __toString(): string
+    {
+        return $this->nom;
+    }
     public function getId(): ?int
     {
         return $this->id;

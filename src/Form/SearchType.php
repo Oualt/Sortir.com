@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Campus;
+use App\Repository\CampusRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,11 +31,15 @@ class SearchType extends AbstractType
                     'placeholder' => 'Rechercher une sortie...',
                 ],
             ])
-            ->add('campus', ChoiceType::class, [
+            ->add('campus', EntityType::class, [
                 'required' => false,
                 'label' => 'Campus :',
                 'placeholder' => 'Sélectionnez un campus',
-                'choices' => $this->getCampusChoices(),
+                'class' => Campus::class,
+                'query_builder' => function (CampusRepository $repository) {
+                    return $repository->createQueryBuilder('campus')
+                        ->orderBy('campus.nom', 'ASC');
+                },
             ]);
     }
 

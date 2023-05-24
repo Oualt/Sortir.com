@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
+use App\Entity\User;
 use App\Form\SearchType;
 use App\Repository\SortieRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,11 +18,15 @@ use Doctrine\ORM\EntityManagerInterface;
 class MainController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private $managerRegistry;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $managerRegistry)
     {
         $this->entityManager = $entityManager;
+        $this->managerRegistry = $managerRegistry;
+
     }
+
 
     #[Route("/", name: "main_login")]
     public function login()
@@ -73,6 +78,22 @@ class MainController extends AbstractController
     {
         return $this->render('detailsProfil.html.twig');
     }
+
+
+    #[Route("/DetailsProfil/{id}", name: "app_profilDetailsOrganisateur")]
+    public function detailsProfilOrganisateur($id)
+    {
+        $o = $this->managerRegistry->getRepository(User::class)->find($id);
+
+        if (!$o) {
+            throw $this->createNotFoundException('L\'utilisateur avec l\'ID '.$id.' n\'existe pas.');
+        }
+
+        return $this->render('detailsProfilorganisateur.html.twig', [
+            'organisateur' => $o,
+        ]);
+    }
+
 
     #[Route("/admin/villes", name: "app_villes")]
     public function villes()

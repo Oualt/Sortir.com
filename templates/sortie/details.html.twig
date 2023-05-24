@@ -11,7 +11,8 @@
     <div class="profil">Nbr de places: {{ sortie.nbInscriptionsMax }} </div>
     <div class="profil">Description: {{ sortie.infosSortie }}</div>
     <div class="profil">Campus: {{ sortie.campus.nom }}</div>
-    <div class="profil">Organisateur: {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }}</div>
+    <div class="profil">Organisateur: <a class="lien" href="{{ path('app_profilDetailsOrganisateur',{id: sortie.organisateur.id}) }}">{{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }}</a></div>
+
     {% if sortie.organisateur == app.user or app.user.roles[0] == 'ROLE_ADMIN' %}
        <div class="profil"> Etat : 
         {% if sortie.getEtat().getLibelle() == 'enCreation' %}

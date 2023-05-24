@@ -29,8 +29,6 @@
 
     {{ form_row(sortieForm.lieu) }}
 
-    {{ form_end(sortieForm) }}
-
 
 <container>
     <button name="action" value="enregistrer">Enregistrer</button>
@@ -45,8 +43,7 @@
         });
     </script>
 
-
-
+    {{ form_end(sortieForm) }}
 {% endblock %}
 
 {% block javascript %}

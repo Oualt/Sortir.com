@@ -8,6 +8,7 @@
     {{ form_start(form) }}
     <div class="barreEtBouton">
         {{ form_row(form.search, {'attr': {'class':'barre', 'placeholder': 'Rechercher...'}}) }}
+        {{ form_row(form.campus) }}
         <button type="submit">Rechercher</button>
     </div>
     {{ form_end(form) }}
@@ -21,7 +22,6 @@
             <th>inscrits/places</th>
             <th>Durée</th>
             <th>État</th>
-
             <th>Organisateur</th>
             <th>Actions</th>
 
@@ -37,6 +37,7 @@
                 <td>{{ sortie.duree | date('%i') }}</td>
                 <td>{{ sortie.etat.id }}</td>
                 <td>{{ sortie.organisateur.nom }}</td>
+                <td>{{ sortie.campus.id }}</td>
                 <td>
                     <a href="{{ path('sortie_details', {'id': sortie.id}) }}" title="details" class="lien">Détails</a>
 

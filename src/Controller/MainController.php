@@ -9,12 +9,20 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method getDoctrine()
  */
 class MainController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     #[Route("/", name: "main_login")]
     public function login()
     {
@@ -30,11 +38,19 @@ class MainController extends AbstractController
             ->leftJoin('s.etat', 'e')
             ->leftJoin('s.users', 'u');
 
-        $searchForm = $this->createForm(SearchType::class);
+        $searchForm = $this->createForm(SearchType::class, null, [
+            'entityManager' => $this->entityManager,
+        ]);
         $searchForm->handleRequest($request);
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $search = $searchForm->get('search')->getData();
+            $campus = $searchForm->get('campus')->getData();
+            if ($campus) {
+                $queryBuilder
+                    ->andWhere('s.campus = :campus')
+                    ->setParameter('campus', $campus);
+            }
             $sorties = $queryBuilder
                 ->andWhere('LOWER(s.nom) LIKE :search')
                 ->setParameter('search', '%'.strtolower($search).'%')
@@ -51,25 +67,28 @@ class MainController extends AbstractController
             'sorties' => $sorties,
         ]);
     }
+
     #[Route("/DetailsProfil", name: "app_profilDetails")]
     public function detailsProfil()
     {
         return $this->render('detailsProfil.html.twig');
     }
+
     #[Route("/admin/villes", name: "app_villes")]
     public function villes()
     {
         return $this->render('villes.html.twig');
     }
+
     #[Route("/admin/campus", name: "app_campus")]
     public function campus()
     {
         return $this->render('campus.html.twig');
     }
-
     #[Route("/UpdateProfil", name: "app_profilUpdate")]
-public function updateProfil()
+    public function updateProfil()
     {
         return $this->render('updateUser.html.twig');
     }
+
 }

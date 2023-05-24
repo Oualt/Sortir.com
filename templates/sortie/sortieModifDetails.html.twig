@@ -11,38 +11,53 @@
     <div class="profil">Nbr de places: {{ sortie.nbInscriptionsMax }} </div>
     <div class="profil">Description: {{ sortie.infosSortie }}</div>
     <div class="profil">Organisateur: {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }}</div>
-    {% if sortie.organisateur == app.user or app.user.roles[0] == 'ROLE_ADMIN' %}
-       <div class="profil"> Etat : 
-        {% if sortie.getEtat().getLibelle() == 'enCreation' %}
-            La sortie n'est pas publiée et n'est pas encore ouverte aux inscriptions.
-        {% elseif sortie.getEtat().getLibelle() == 'ouverte' %}
-            La sortie est publiée et ouverte aux inscriptions.
-        {% elseif sortie.getEtat().getLibelle() == 'cloturee' %}
-            La sortie est clôturée. Il n'est plus possible de s'inscrire.
-        {% elseif sortie.getEtat().getLibelle() == 'enCours' %}
-            La sortie est en cours.
-        {% elseif sortie.getEtat().getLibelle() == 'passee' %}
-            La sortie est terminée.
-        {% endif %}
-    {% endif %}
-</div>
-{% if app.user.roles[0] == 'ROLE_USER' %}
-    
-        {% if sortie.getEtat().getLibelle() == 'cloturee' %}
-    <div class="profil"> Etat : La sortie est clôturée. Il n'est plus possible de s'inscrire. </div>
-        {% elseif sortie.getEtat().getLibelle() == 'enCours' %}
-            <div class="profil"> Etat : La sortie est en cours. </div>
-        {% elseif sortie.getEtat().getLibelle() == 'passee' %}
-            <div class="profil"> Etat : La sortie est terminée. </div>
-        {% endif %}
-    
-    {% endif %}
+    <form method="post" action="{{ path('sortie_modifDetails') }}">
+        <div>
+            <label for="nom">Nom de la sortie :</label>
+            <input type="string" id="nom" name="nom" value="{{ sortie.nom }}">
+        </div>
+        <div>
+            <label for="dateEtHeure">Date et heure de la sortie :</label>
+            <input type="date" id="DateEtHeure" name="DateEtHeure" value="{{ sortie.dateHeureDebut }}">
+        </div>
+        <div>
+            <label for="dateLimite">Date et heure limite d'inscription :</label>
+            <input type="date" id="dateLimite" name="dateLimite" value="{{ sortie.dateLimiteInscription }}">
+        </div>
+        <div>
+            <label for="duree">Durée de la sortie :</label>
+            <input type="text" id="duree" name="duree" value="{{ sortie.duree }}">
+        </div>
+        <div>
+            <label for="places">Nombre de participants :</label>
+            <input type="email" id="places" name="places" value="{{ sortie.nbInscriptionsMax }}">
+        </div>
+        <div>
+            <label for="description">Description de la sortie :</label>
+            <input type="email" id="description" name="description" value="{{ sortie.infosSortie }}">
+        </div>
+        <div>
+            <label for="campus">Campus :</label>
+            <input type="email" id="campus" name="campus" value="{{ sortie.campus }}">
+        </div>
+        <div>
+            <label for="ville">Ville :</label>
+            <input type="email" id="ville" name="ville" value="{{ sortie.lieu.ville }}">
+        </div>
+        <div>
+            <label for="lieu">Lieu :</label>
+            <input type="email" id="lieu" name="lieu" value="{{ sortie.lieu }}">
+        </div>
+        <div>
+            <button type="submit" value="update" >Enregistrer les modifications</button>
+        </div>
+
+    </form>
 
     {% if sortie.organisateur == app.user or app.user.roles[0] == 'ROLE_ADMIN' %}
         <form method="post" action="{{ path('sortie_details', {'id': sortie.id}) }}">
-            {% if sortie.getEtat().getLibelle() == 'enCreation' %}
+            <button type="submit" name="action" value="enregistrer">Enregistrer les modifications</button>
             <button type="submit" name="action" value="publier">Publier la sortie</button>
-            {% endif %}
             <button type="submit" name="action" value="annuler">Annuler la sortie</button>
         </form>
     {% endif %}

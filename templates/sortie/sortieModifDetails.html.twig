@@ -1,64 +1,83 @@
 {% extends 'main.html.twig' %}
 
-{% block title %}{{ parent() }} | Détails {{ sortie.nom }}{% endblock %}
+{% block title %}{{ parent() }} | Modification des de la sortie {{ sortie.nom }}{% endblock %}
 
 {% block body %}
-    <h2>{{ sortie.nom }}</h2>
+        
+{{ form_start(sortieForm) }}
 
-    <div class="profil">Date de la sortie: {{ sortie.dateHeureDebut | date('d/m/Y') }}</div>
-    <div class="profil">Date limite d'inscription: {{ sortie.dateLimiteInscription | date('d-m-Y-H-i') }}</div>
-    <div class="profil">Durée de l'activité: {{ sortie.duree |date('%i') }} min</div>
-    <div class="profil">Nbr de places: {{ sortie.nbInscriptionsMax }} </div>
-    <div class="profil">Description: {{ sortie.infosSortie }}</div>
-    <div class="profil">Organisateur: {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }}</div>
-    <form method="post" action="{{ path('sortie_modifDetails') }}">
-        <div>
-            <label for="nom">Nom de la sortie :</label>
-            <input type="string" id="nom" name="nom" value="{{ sortie.nom }}">
-        </div>
-        <div>
-            <label for="dateEtHeure">Date et heure de la sortie :</label>
-            <input type="date" id="DateEtHeure" name="DateEtHeure" value="{{ sortie.dateHeureDebut }}">
-        </div>
-        <div>
-            <label for="dateLimite">Date et heure limite d'inscription :</label>
-            <input type="date" id="dateLimite" name="dateLimite" value="{{ sortie.dateLimiteInscription }}">
-        </div>
-        <div>
-            <label for="duree">Durée de la sortie :</label>
-            <input type="text" id="duree" name="duree" value="{{ sortie.duree }}">
-        </div>
-        <div>
-            <label for="places">Nombre de participants :</label>
-            <input type="email" id="places" name="places" value="{{ sortie.nbInscriptionsMax }}">
-        </div>
-        <div>
-            <label for="description">Description de la sortie :</label>
-            <input type="email" id="description" name="description" value="{{ sortie.infosSortie }}">
-        </div>
-        <div>
-            <label for="campus">Campus :</label>
-            <input type="email" id="campus" name="campus" value="{{ sortie.campus }}">
-        </div>
-        <div>
-            <label for="ville">Ville :</label>
-            <input type="email" id="ville" name="ville" value="{{ sortie.lieu.ville }}">
-        </div>
-        <div>
-            <label for="lieu">Lieu :</label>
-            <input type="email" id="lieu" name="lieu" value="{{ sortie.lieu }}">
-        </div>
-        <div>
-            <button type="submit" value="update" >Enregistrer les modifications</button>
-        </div>
+    {{ form_widget(sortieForm.nom, {
+    'attr': {'value': sortie.nom}
+}) }}
 
-    </form>
+    {{ form_row(sortieForm.dateHeureDebut, {
+        'attr': {'class': 'flatpickr-input'}, 'value': sortie.dateHeureDebut
+    }) }}
 
-    {% if sortie.organisateur == app.user or app.user.roles[0] == 'ROLE_ADMIN' %}
-        <form method="post" action="{{ path('sortie_details', {'id': sortie.id}) }}">
-            <button type="submit" name="action" value="enregistrer">Enregistrer les modifications</button>
-            <button type="submit" name="action" value="publier">Publier la sortie</button>
-            <button type="submit" name="action" value="annuler">Annuler la sortie</button>
-        </form>
-    {% endif %}
+    {{ form_row(sortieForm.dateLimiteInscription, {
+        'attr': {'class': 'flatpickr-input'}, 'value': sortie.dateLimiteInscription
+    }) }}
+
+    {{ form_row(sortieForm.duree, {'attr': {'value': sortie.duree}}) }}
+
+    {{ form_row(sortieForm.nbInscriptionsMax, {'attr': {'value': sortie.nbInscriptionsMax}}) }}
+
+    {{ form_row(sortieForm.infosSortie, {'attr': {'value': sortie.infosSortie}}) }}
+
+    {{ form_row(sortieForm.campus, {'attr': {'value': sortie.campus}}) }}
+
+    {{ form_row(sortieForm.ville, {'attr': {'value': sortie.getLieu().getVille()}}) }}
+    {{ form_row(sortieForm.lieu, {'attr': {'value': sortie.lieu}}) }}
+
+    
+
+<container>
+    <button name="action" value="enregistrer">Enregistrer</button>
+    <button name="action" value="publier">Publier la sortie</button>
+    <button name="action" value="annuler">Annuler</button>
+</container>
+    <script>
+        flatpickr('.flatpickr-input', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            locale: 'fr'
+        });
+    </script>
+
+    {{ form_end(sortieForm) }}
+{% endblock %}
+
+{% block javascript %}
+
+    <script>
+        //On va chercher la ville
+        window.onload = () => {
+        let ville = document.querySelector("#sortie_ville");
+
+        ville.addEventListener("change", function (){
+            let form = this.closest("form");
+            let data = this.name + "=" + this.value;
+
+
+            fetch(form.action, {
+                method: form.getAttribute("method"),
+                body: data,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded; charset:utf-8"
+                }
+            })
+        .then(response => response.text())
+        .then(html=>{
+            let content = document.createElement("html");
+            content.innerHTML = html;
+            let nouveauSelect = content.querySelector("#sortie_ville");
+            document.querySelector("#sortie_ville").replaceWith(nouveauSelect);
+    })
+        .catch(error=>{
+            console.log(error);
+    })
+        });
+    };
+    </script>
+
 {% endblock %}

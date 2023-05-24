@@ -10,4 +10,5 @@
     <div class="profil">Durée de l'activité: {{ sortie.duree |date('%i') }} min</div>
     <div class="profil">Nbr de places: {{ sortie.nbInscriptionsMax }} </div>
     <div class="profil">Description: {{ sortie.infosSortie }}</div>
+    <div class="profil">Campus: {{ sortie.campus.nom }}</div>
 {% endblock %}

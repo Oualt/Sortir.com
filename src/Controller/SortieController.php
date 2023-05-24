@@ -112,7 +112,8 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('main_accueil');
         } elseif ($action === 'modifier') {
             // Traitement pour le bouton "Modifier"
-            $sortie = new Sortie();
+            
+            $sortie = $sortieRepository->find($id);
 
             $sortieForm = $this->createForm(SortieType::class, $sortie);
 
@@ -157,17 +158,35 @@ class SortieController extends AbstractController
     public function modifDetails(int $id, Request $request, EntityManagerInterface $entityManager, SortieRepository $sortieRepository): Response
     {
         $sortie = $sortieRepository->find($id);
+        
+
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
 
         $action = $request->request->get('action');
+        
 
         $etatRepository = $entityManager->getRepository(Etat::class);
-        if ($action === 'publier') {
-            // Traitement pour le bouton "Publier la sortie"
-            $etatCree = $etatRepository->findOneBy(['libelle' => 'ouverte']);
-            $sortie->setEtat($etatCree);
+        if ($sortieForm->isSubmitted()) {
+        if ($action === 'enregistrer') {
+            // Traitement pour le bouton "Enregistrer la sortie"
+            $campus = new Campus();
+            $sortie = new Sortie();
+            $campus = $sortieForm->getData()->getCampus();
+            $sortie->setCampus($campus);
+            $sortie->setOrganisateur($this->getUser());
+            $ville = $sortieForm->get('ville')->getData();
+            $lieu = $sortieForm->get('lieu')->getData();
+            $sortie->setLieu($lieu);
+
+            $ville = $sortieForm->get('lieu')->getData()->getVille();
+            $sortie->setVille($ville);
+
+            $etat = $sortieRepository->find($id)->getEtat();
+            $sortie->setEtat($etat);
+            $entityManager->persist($sortie);
             $entityManager->flush();
 
-            $this->addFlash('failure', 'La sortie a bien été annulée');
+            $this->addFlash('success', 'La sortie a bien été modifiée');
             return $this->redirectToRoute('main_accueil');
         } elseif ($action === 'annuler') {
             // Traitement pour le bouton "Annuler"
@@ -185,5 +204,6 @@ class SortieController extends AbstractController
             'sortieForm' => $sortieForm->createView()
         ]);
     }
+}
 }
 

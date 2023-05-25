@@ -4,9 +4,8 @@
 
 {% block body %}
 
-
     <h2 href="">Modifier le profil</h2>
-    <form method="post" action="{{ path('update_profile') }}">
+    <form method="post" action="{{ path('update_profile') }}" enctype="multipart/form-data">
         <div>
             <label for="pseudo">Pseudo:</label>
             <input type="text" id="pseudo" name="pseudo" value="{{ app.user.pseudo }}">
@@ -27,13 +26,12 @@
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" value="{{ app.user.email }}">
         </div>
-
         <div>
+            <label for="photo">Photo de profil:</label>
+            <input type="file" id="photo" name="photo">
+
             <button type="submit" value="update" >Enregistrer les modifications</button>
         </div>
-
-
     </form>
-
 
 {% endblock %}

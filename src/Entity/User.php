@@ -265,4 +265,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $photoPath;
+
+    // ...
+
+    public function getPhotoPath(): ?string
+    {
+        return $this->photoPath;
+    }
+
+    public function setPhotoPath(?string $photoPath): void
+    {
+        $this->photoPath = $photoPath;
+    }
 }

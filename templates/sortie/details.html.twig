@@ -69,4 +69,12 @@
     {% else %}
         <div class="success" >Vous êtes déjà inscrit à cette sortie.</div>
     {% endif %}
+
+    {# Ajoutez un bouton ce désinscrire #}
+    {% if sortie.getParticipants().contains(app.user) %}
+        <form action="{{ path('sortie_desinscription', {'id': sortie.id}) }}" method="post">
+            <button type="submit">Se désinscrire</button>
+        </form>
+    {% endif %}
+
 {% endblock %}

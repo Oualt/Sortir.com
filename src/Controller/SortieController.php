@@ -141,6 +141,15 @@ class SortieController extends AbstractController
         // Récupérer la sortie à laquelle l'utilisateur souhaite s'inscrire
         $sortie = $entityManager->getRepository(Sortie::class)->find($id);
 
+        // Vérifier si le nombre de participants atteint la limite
+        $nombreParticipants = $sortie->getParticipants()->count();
+        $placesDisponibles = $sortie->getNbInscriptionsMax();
+
+        if ($nombreParticipants >= $placesDisponibles) {
+            $this->addFlash('error', 'Il n\'y a plus de places disponibles pour cette sortie.');
+            return $this->redirectToRoute('sortie_details', ['id' => $id]);
+        }
+
         $sortie->addParticipant($this->getUser()); // Ajoute l'utilisateur actuel comme participant
         $entityManager->flush();
 
@@ -175,4 +184,51 @@ class SortieController extends AbstractController
             'sortieForm' => $sortieForm->createView()
         ]);
     }
+
+
+
+
+
+
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @Route("/sortie/desinscription/{id}", name="sortie_desinscription", methods={"POST"})
+     */
+    public function desinscription(Request $request, $id)
+    {
+        $sortie = $this->entityManager->getRepository(Sortie::class)->find($id);
+
+        // Vérifier si la sortie existe
+        if (!$sortie) {
+            throw $this->createNotFoundException('La sortie n\'existe pas.');
+        }
+
+        // Récupérer l'utilisateur actuellement connecté
+        $user = $this->getUser();
+
+        // Vérifier si l'utilisateur est inscrit à la sortie
+        if (!$sortie->getParticipants()->contains($user)) {
+            throw $this->createNotFoundException('Vous n\'êtes pas inscrit à cette sortie.');
+        }
+
+        // Supprimer l'utilisateur de la liste des participants
+        $sortie->removeParticipant($user);
+
+
+
+        // Enregistrer les modifications dans la base de données
+        $this->entityManager->flush();
+
+        // Rediriger vers la page de détails de la sortie
+        $this->addFlash('alert', 'Votre participation à la sortie a été annulée.');
+        return $this->redirectToRoute('sortie_details', ['id' => $id]);
+    }
+
+
 }

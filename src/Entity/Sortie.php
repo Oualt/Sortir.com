@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Ville;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Nullable;
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
@@ -74,8 +76,6 @@ class Sortie
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'sontInscrits')]
     private Collection $participants;
-
-
 
     public function __construct()
     {
@@ -291,7 +291,7 @@ class Sortie
     public function removeParticipant(User $participant): self
     {
         if ($this->participants->removeElement($participant)) {
-            $participant->removeSortie($this);
+            $participant->removeEstInscrit($this);
         }
 
         return $this;

@@ -3,10 +3,13 @@
 {% block title %}{{ parent() }} | Détails {{ organisateur.pseudo }}{% endblock %}
 
 {% block body %}
-    <h2>Détails du profil</h2>
-
-    <img src="{{ asset('directory_to_upload/'~organisateur.image) }}" alt="Profile Picture" class="centered-image">
+    <h2>Détails du profil de {{ organisateur.pseudo }}</h2>
+    {% if organisateur.image is empty %}
+    <img src="{{ asset('directory_to_upload/smiley.png') }}" alt="" class="centered-image">
+    {% endif %}
+    <img src="{{ asset('directory_to_upload/'~organisateur.image) }}" alt="" class="centered-image">
     <div class="profil">Nom: {{ organisateur.nom }}</div>
     <div class="profil">Prénom: {{ organisateur.prenom }}</div>
     <div class="profil">Email: {{ organisateur.email }}</div>
+
 {% endblock %}

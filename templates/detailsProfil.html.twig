@@ -4,7 +4,10 @@
 
 {% block body %}
     <h2>Details du Profil de {{ app.user.pseudo }}</h2>
-    <img src="{{ asset('directory_to_upload/'~app.user.image) }}" alt="Profile Picture" class="centered-image">
+    {% if app.user.image is empty %}
+        <img src="{{ asset('directory_to_upload/smiley.png') }}" alt="" class="centered-image">
+    {% endif %}
+    <img src="{{ asset('directory_to_upload/'~app.user.image) }}" alt="" class="centered-image">
     <div class="profil">
 
     Prénom:    {{app.user.prenom }}<br>

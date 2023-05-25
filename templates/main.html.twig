@@ -26,7 +26,11 @@
                 <li><a href="{{ path('main_accueil') }}" title="accueil">Accueil</a></li>
                 <li><a href="{{ path('app_profilDetails') }}" title="monProfil">Mon profil</a></li>
                 <li><a href="{{ path('app_logout') }}" title="seDeconnecter">Se déconnecter (Hello! {{ app.user.pseudo }})</a></li>
-                <li><a href="{{ path('app_profilDetails') }}" title="monProfil"><img src="{{ asset('directory_to_upload/'~app.user.image) }}" alt="Profile Picture" class="profil-image"></a></li>
+                {% if app.user.image is empty %}
+                    <li><a href="{{ path('app_profilDetails') }}" title="monProfil"><img src="{{ asset('directory_to_upload/smiley.png') }}" alt="" class="profil-image"></a></li>
+                {% else %}
+                     <li><a href="{{ path('app_profilDetails') }}" title="monProfil"><img src="{{ asset('directory_to_upload/'~app.user.image) }}" alt="" class="profil-image"></a></li>
+                {% endif %}
             {% else %}
                 <li><a href="{{ path('app_login') }}" title="campus">Se connecter</a></li>
                 <li><a href="{{ path('app_register') }}" title="creerUnProfil">Créer un profil</a></li>

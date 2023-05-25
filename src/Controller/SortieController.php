@@ -141,6 +141,15 @@ class SortieController extends AbstractController
         // Récupérer la sortie à laquelle l'utilisateur souhaite s'inscrire
         $sortie = $entityManager->getRepository(Sortie::class)->find($id);
 
+        // Vérifier si les inscriptions sont encore ouvertes
+        $dateLimiteInscription = $sortie->getDateLimiteInscription();
+        $maintenant = new \DateTime();
+
+        if ($maintenant > $dateLimiteInscription) {
+            $this->addFlash('error', 'Les inscriptions à cette sortie sont clôturées.');
+            return $this->redirectToRoute('sortie_details', ['id' => $id]);
+        }
+
         // Vérifier si le nombre de participants atteint la limite
         $nombreParticipants = $sortie->getParticipants()->count();
         $placesDisponibles = $sortie->getNbInscriptionsMax();

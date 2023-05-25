@@ -6,9 +6,8 @@
 
     {{ form_start(sortieForm) }}
 
-    {{ form_widget(sortieForm.nom, {
-        'attr': {'value': sortie.nom}
-    }) }}
+
+    {{ form_row(sortieForm.nom, {'attr': { 'value': sortie.nom }}) }}
 
     {{ form_row(sortieForm.dateHeureDebut, {
         'attr': {'class': 'flatpickr-input'}, 'value': sortie.dateHeureDebut|date('Y-m-d H:i')

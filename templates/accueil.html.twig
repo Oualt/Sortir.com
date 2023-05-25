@@ -23,6 +23,7 @@
             <th>Durée</th>
             <th>État</th>
             <th>Organisateur</th>
+            <th>Campus</th>
             <th>Actions</th>
 
         </tr>
@@ -37,10 +38,12 @@
                 <td>{{ sortie.duree | date('%i') }}</td>
                 <td>{{ sortie.etat.id }}</td>
                 <td>{{ sortie.organisateur.nom }}</td>
-                <td>{{ sortie.campus.id }}</td>
+                <td>{{ sortie.campus.nom }}</td>
                 <td>
                     <a href="{{ path('sortie_details', {'id': sortie.id}) }}" title="details" class="lien">Détails</a>
-
+                    {% if sortie.organisateur == app.user %}
+                        <a href="{{ path('sortie_modifDetails', {'id': sortie.id}) }}">Modifier</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

@@ -60,7 +60,7 @@
     {% endif %}
 
     {# Ajoutez le bouton d'inscription #}
-    {% if not sortie.sontInscrits.contains(user) %}
+    {% if not sortie.sontInscrits.contains(app.user) %}
         <form action="{{ path('sortie_inscription', {'id': sortie.id}) }}" method="post">
             <button type="submit">S'inscrire</button>
         </form>

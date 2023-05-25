@@ -4,14 +4,19 @@
 
 {% block body %}
     <h1>Accueil</h1>
-
     {{ form_start(form) }}
+    {{ form_widget(form.search_type) }}
+    {{ form_widget(form.search) }}
+    {{ form_widget(form.campus) }}
+    {{ form_widget(form.submit) }}
+    {{ form_end(form) }}
+    {#{{ form_start(form) }}
     <div class="barreEtBouton">
         {{ form_row(form.search, {'attr': {'class':'barre', 'placeholder': 'Rechercher...'}}) }}
         {{ form_row(form.campus) }}
         <button type="submit">Rechercher</button>
     </div>
-    {{ form_end(form) }}
+    {{ form_end(form) }}#}
 
     <table>
         <thead>

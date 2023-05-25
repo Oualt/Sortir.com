@@ -24,8 +24,7 @@ class SortieController extends AbstractController
     public function create(
         Request                $request,
         EntityManagerInterface $entityManager
-    ): Response
-    {
+    ): Response {
         $campus = new Campus();
         $sortie = new Sortie();
 

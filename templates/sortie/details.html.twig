@@ -50,8 +50,10 @@
     {% endif %}
 
     {% if sortie.organisateur == app.user or app.user.roles[0] == 'ROLE_ADMIN' %}
-        <form method="post" action="{{ path('sortie_details', {'id': sortie.id}) }}">
+        <form method="post" action="{{ path('sortie_modifDetails', {'id': sortie.id}) }}">
             <button type="submit" name="action" value="modifier">Modifier la sortie</button>
+        </form>
+        <form method="post" action="{{ path('sortie_details', {'id': sortie.id}) }}">
             {% if sortie.getEtat().getLibelle() == 'enCreation' %}
             <button type="submit" name="action" value="publier">Publier la sortie</button>
             {% endif %}

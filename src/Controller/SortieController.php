@@ -194,11 +194,6 @@ class SortieController extends AbstractController
         ]);
     }
 
-
-
-
-
-
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)

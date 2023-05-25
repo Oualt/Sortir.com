@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Entity\Etat;
 use App\Repository\CampusRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -85,7 +86,9 @@ class MainController extends AbstractController
             ->getRepository(Sortie::class)
             ->createQueryBuilder('s')
             ->leftJoin('s.etat', 'e')
-            ->leftJoin('s.users', 'u');
+            ->leftJoin('s.users', 'u')
+            ->andWhere('e.id != :etatTermineeId') // Exclure l'état "Terminée" (id = 5)
+            ->setParameter('etatTermineeId', 5);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $searchType = $form->getData()['search_type'];
@@ -103,6 +106,7 @@ class MainController extends AbstractController
                     $sorties = $queryBuilder
                         ->andWhere('s.organisateur = :organisateur')
                         ->setParameter('organisateur', $this->getUser())
+                        ->andWhere('s.etat = 1') // Filtrer les sorties en état 1 pour l'organisateur
                         ->getQuery()
                         ->getResult();
                     break;
@@ -129,7 +133,9 @@ class MainController extends AbstractController
                     break;
                 default:
                     $sorties = $queryBuilder
+                        ->leftJoin('s.etat', 'e')
                         ->andWhere('LOWER(s.nom) LIKE :search')
+                        ->andWhere('e.id != 1') // Exclure les sorties en état 1 pour les autres types de recherche
                         ->setParameter('search', '%'.strtolower($search).'%')
                         ->getQuery()
                         ->getResult();
@@ -139,6 +145,23 @@ class MainController extends AbstractController
             $sorties = $queryBuilder
                 ->getQuery()
                 ->getResult();
+        }
+
+// Vérifier et mettre à jour l'état des sorties présentes depuis plus d'un mois
+        $maintenant = new \DateTime();
+        $etatTerminee = $doctrine->getRepository(Etat::class)->find(5); // Récupérer l'état "Terminée"
+
+        foreach ($sorties as $sortie) {
+            $dateCreation = $sortie->getDateHeureDebut();
+            $intervalle = $dateCreation->diff($maintenant);
+
+            if ($intervalle->m >= 1) {
+                // Mettre à jour l'état de la sortie à "Terminée"
+                $sortie->setEtat($etatTerminee);
+                $this->entityManager->flush();
+
+                $this->addFlash('warning', 'La sortie "'.$sortie->getNom().'" est terminée.');
+            }
         }
 
         return $this->render('accueil.html.twig', [

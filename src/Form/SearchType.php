@@ -30,16 +30,6 @@ class SearchType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Rechercher une sortie...',
                 ],
-            ])
-            ->add('campus', EntityType::class, [
-                'required' => false,
-                'label' => 'Campus :',
-                'placeholder' => 'Sélectionnez un campus',
-                'class' => Campus::class,
-                'query_builder' => function (CampusRepository $repository) {
-                    return $repository->createQueryBuilder('campus')
-                        ->orderBy('campus.nom', 'ASC');
-                },
             ]);
     }
 

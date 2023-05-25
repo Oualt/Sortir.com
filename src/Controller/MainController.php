@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Repository\CampusRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,6 +70,9 @@ class MainController extends AbstractController
                 'label' => 'Campus',
                 'choice_label' => 'nom',
                 'required' => false,
+                'query_builder' => function (CampusRepository $repository) {
+                    return $repository->createQueryBuilder('campus')
+                        ->orderBy('campus.nom', 'ASC');}
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Rechercher',

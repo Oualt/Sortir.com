@@ -6,6 +6,9 @@ use App\Entity\Sortie;
 use App\Entity\Campus;
 use App\Entity\Lieu;
 use App\Entity\Ville;
+use App\Repository\CampusRepository;
+use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -82,6 +85,9 @@ class SortieType extends AbstractType
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
                 'choice_label' => 'nom',
+                'query_builder' => function (CampusRepository $repository) {
+                    return $repository->createQueryBuilder('campus')
+                        ->orderBy('campus.nom', 'ASC');}
             ])
 
             // ajout du champ ville dans le formulaire, contenant la ville de la sortie
@@ -91,7 +97,10 @@ class SortieType extends AbstractType
                 'choice_label' => 'nom',
                 'required' => false,
                 'placeholder'=> 'Ville',
-                'label'=> 'Ville'
+                'label'=> 'Ville',
+                'query_builder' => function (VilleRepository $villeRepository) {
+                    return $villeRepository->createQueryBuilder('ville')
+                        ->orderBy('ville.nom', 'ASC');}
             ])
 
             // ajout du champ lieu dans le formulaire, contenant le lieu de la sortie
@@ -100,7 +109,10 @@ class SortieType extends AbstractType
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
                 'required' => false,
-                'placeholder'=> 'Lieu'
+                'placeholder'=> 'Lieu',
+                'query_builder' => function (LieuRepository $lieuRepository) {
+                    return $lieuRepository->createQueryBuilder('lieu')
+                        ->orderBy('lieu.nom', 'ASC');}
             ]);
 
 

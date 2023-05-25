@@ -5,19 +5,14 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Entity\Sortie;
-use App\Entity\Lieu;
-use App\Entity\Ville;
 use App\Entity\Etat;
 use App\Form\SortieType;
-use App\Form\VilleType;
 use App\Repository\SortieRepository;
-use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\DatetimeInterface;
 
 
@@ -27,7 +22,7 @@ class SortieController extends AbstractController
 
     #[Route("/sortie/create", name: "sortie_create")]
     public function create(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager
     ): Response {
         $campus = new Campus();
@@ -35,7 +30,6 @@ class SortieController extends AbstractController
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $action = $request->request->get('action');
-
 
 
         $sortieForm->handleRequest($request);
@@ -94,6 +88,7 @@ class SortieController extends AbstractController
             'sortieForm' => $sortieForm->createView(),
         ]);
     }
+
     #[Route("/sortie/details/{id}", name: "sortie_details")]
     public function details(int $id, Request $request, EntityManagerInterface $entityManager, SortieRepository $sortieRepository): Response
     {
@@ -112,7 +107,7 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('main_accueil');
         } elseif ($action === 'modifier') {
             // Traitement pour le bouton "Modifier"
-            
+
             $sortie = $sortieRepository->find($id);
 
             $sortieForm = $this->createForm(SortieType::class, $sortie);
@@ -158,52 +153,26 @@ class SortieController extends AbstractController
     public function modifDetails(int $id, Request $request, EntityManagerInterface $entityManager, SortieRepository $sortieRepository): Response
     {
         $sortie = $sortieRepository->find($id);
-        
-
         $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm->handleRequest($request);
 
-        $action = $request->request->get('action');
-        
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            // update the $sortie object with the form data
+            $sortie->setCampus($sortieForm->getData()->getCampus());
+            $sortie->setLieu($sortieForm->get('lieu')->getData());
+            $sortie->setVille($sortieForm->get('lieu')->getData()->getVille());
 
-        $etatRepository = $entityManager->getRepository(Etat::class);
-        if ($sortieForm->isSubmitted()) {
-        if ($action === 'enregistrer') {
-            // Traitement pour le bouton "Enregistrer la sortie"
-            $campus = new Campus();
-            $sortie = new Sortie();
-            $campus = $sortieForm->getData()->getCampus();
-            $sortie->setCampus($campus);
-            $sortie->setOrganisateur($this->getUser());
-            $ville = $sortieForm->get('ville')->getData();
-            $lieu = $sortieForm->get('lieu')->getData();
-            $sortie->setLieu($lieu);
-
-            $ville = $sortieForm->get('lieu')->getData()->getVille();
-            $sortie->setVille($ville);
-
-            $etat = $sortieRepository->find($id)->getEtat();
-            $sortie->setEtat($etat);
-            $entityManager->persist($sortie);
+            // save the changes to the database
             $entityManager->flush();
 
             $this->addFlash('success', 'La sortie a bien été modifiée');
-            return $this->redirectToRoute('main_accueil');
-        } elseif ($action === 'annuler') {
-            // Traitement pour le bouton "Annuler"
-            $entityManager->remove($sortie);
-            $entityManager->flush();
-
-            $this->addFlash('failure', 'La sortie a bien été annulée');
-            return $this->redirectToRoute('main_accueil');
+            return $this->redirectToRoute('sortie_details', ['id' => $sortie->getId()]);
         }
 
-        $sortieForm = $this->createForm(SortieType::class, $sortie);
-
-        return $this->render('sortie/details.html.twig', [
+        // add this return statement to fix the error
+        return $this->render('sortie/sortieModifDetails.html.twig', [
             'sortie' => $sortie,
             'sortieForm' => $sortieForm->createView()
         ]);
     }
 }
-}
-

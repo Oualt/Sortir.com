@@ -103,7 +103,7 @@ class SortieController extends AbstractController
             $sortie->setEtat($etatCree);
             $entityManager->flush();
 
-            $this->addFlash('failure', 'La sortie a bien été annulée');
+            $this->addFlash('success', 'La sortie a bien été publiée');
             return $this->redirectToRoute('main_accueil');
         } elseif ($action === 'modifier') {
             // Traitement pour le bouton "Modifier"

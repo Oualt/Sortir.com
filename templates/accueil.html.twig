@@ -41,7 +41,7 @@
                 <td>{{ sortie.dateLimiteInscription |date('d/m/Y H:i')}}</td>
                 <td class="nbInscrits">{{ sortie.getNbInscrits() }}/{{ sortie.nbInscriptionsMax }}</td>
                 <td>{{ sortie.duree | date('%i') }}</td>
-                <td>{{ sortie.etat.id }}</td>
+                <td>{{ sortie.etat.libelle }}</td>
                 <td>{{ sortie.organisateur.nom }}</td>
                 <td>{{ sortie.campus.nom }}</td>
                 <td>

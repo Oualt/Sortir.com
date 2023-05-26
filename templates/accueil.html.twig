@@ -41,7 +41,19 @@
                 <td>{{ sortie.dateLimiteInscription |date('d/m/Y H:i')}}</td>
                 <td class="nbInscrits">{{ sortie.getNbInscrits() }}/{{ sortie.nbInscriptionsMax }}</td>
                 <td>{{ sortie.duree | date('%i') }}</td>
-                <td>{{ sortie.etat.libelle }}</td>
+                <td>{% if sortie.etat.id == 1 %}
+                    En création
+                        {% elseif sortie.etat.id == 2 %}
+                            Ouverte
+                            {% elseif sortie.etat.id == 3 %}
+                                Clôturée
+                                {% elseif sortie.etat.id == 4 %}
+                                    En cours
+                                    {% elseif sortie.etat.id == 5 %}
+                                        Terminée
+                                        {% elseif sortie.etat.id == 6 %}
+                                            Annulée
+                                            {% endif %}</td>
                 <td>{{ sortie.organisateur.nom }}</td>
                 <td>{{ sortie.campus.nom }}</td>
                 <td>
